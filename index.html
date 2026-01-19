@@ -4,22 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Victor Iyanuoluwa Akanbi | Electrical Engineer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         /* --- THE ORIGINAL PCB BLACK THEME --- */
         :root {
             --bg-color: #121212;
             --text-color: #e0e0e0;
             --accent-color: #00ff41;
-            --font-main: 'Space Mono', monospace;
-            --font-header: 'Share Tech Mono', monospace;
+            /* Subtext/Code font */
+            --font-sub: 'Space Mono', monospace;
+            /* Reverted clean header font */
+            --font-header: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         html, body {
             margin: 0; padding: 0; height: 100%;
-            font-family: var(--font-main);
+            font-family: var(--font-sub);
             background-color: var(--bg-color); color: var(--text-color);
-            font-size: 18px; /* Increased base font size */
+            font-size: 18px;
         }
 
         .split-container { display: flex; min-height: 100vh; flex-wrap: wrap; }
@@ -65,12 +67,32 @@
             filter: drop-shadow(0 0 8px var(--accent-color));
         }
 
-        /* TYPOGRAPHY OVERHAUL */
-        h1 { font-family: var(--font-header); font-size: 3.5rem; color: var(--accent-color); margin: 0; }
-        h2 { font-family: var(--font-header); font-size: 2rem; color: var(--accent-color); text-transform: uppercase; margin-bottom: 20px; }
-        h3 { font-family: var(--font-header); font-size: 1.5rem; color: var(--accent-color); margin-bottom: 10px; }
+        /* TYPOGRAPHY UPDATES */
+        h1 { 
+            font-family: var(--font-header); 
+            font-size: 3.8rem; 
+            font-weight: 700;
+            color: var(--accent-color); 
+            margin: 0; 
+            letter-spacing: -1px;
+        }
+        h2 { 
+            font-family: var(--font-header); 
+            font-size: 2.2rem; 
+            font-weight: 600;
+            color: var(--accent-color); 
+            text-transform: uppercase; 
+            margin-bottom: 25px; 
+        }
+        h3 { 
+            font-family: var(--font-header); 
+            font-size: 1.6rem; 
+            font-weight: 600;
+            color: var(--accent-color); 
+            margin-bottom: 15px; 
+        }
         
-        p { line-height: 1.8; margin-bottom: 1.5rem; }
+        p { line-height: 1.8; margin-bottom: 1.5rem; color: #ccc; }
 
         .project-card {
             border-left: 5px solid var(--accent-color);
@@ -84,7 +106,7 @@
         .btn {
             display: inline-block; border: 2px solid var(--accent-color); color: var(--accent-color);
             padding: 12px 28px; text-decoration: none; margin-top: 20px;
-            font-family: var(--font-header); font-weight: bold; font-size: 1.1rem;
+            font-family: var(--font-sub); font-weight: bold; font-size: 1rem;
             transition: all 0.3s;
         }
         .btn:hover { background-color: var(--accent-color); color: #000; box-shadow: 0 0 20px var(--accent-color); }
@@ -99,16 +121,23 @@
         @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--accent-color); } }
 
         nav { margin-bottom: 80px; text-align: center; }
-        nav a { color: rgba(255, 255, 255, 0.5); text-decoration: none; margin: 0 25px; font-family: var(--font-header); font-size: 1.1rem; }
+        nav a { 
+            color: rgba(255, 255, 255, 0.5); 
+            text-decoration: none; 
+            margin: 0 25px; 
+            font-family: var(--font-header); 
+            font-weight: 600;
+            font-size: 1.1rem; 
+        }
         nav a:hover { color: var(--accent-color); border-bottom: 2px solid var(--accent-color); }
 
-        footer { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; margin-top: 50px; font-size: 0.9rem; color: #666; font-family: var(--font-header); }
+        footer { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; margin-top: 50px; font-size: 0.9rem; color: #666; font-family: var(--font-sub); }
 
         @media (max-width: 768px) {
             html { font-size: 16px; }
             .content-section, .content-section:nth-of-type(even) { flex-direction: column; text-align: center; }
             .section-symbol { order: -1; margin-bottom: 30px; }
-            h1 { font-size: 2.5rem; }
+            h1 { font-size: 2.8rem; }
         }
     </style>
 </head>
@@ -124,8 +153,8 @@
 
         <header style="margin-bottom: 120px;">
             <div class="typewriter"><h1>VICTOR AKANBI</h1></div>
-            <p style="font-size: 1.5rem; color: rgba(255,255,255,0.8);">Electrical Engineering @ TCU</p>
-            <p style="color: var(--accent-color); font-family: var(--font-header); font-size: 1rem;">> STATUS: OPTIMIZED_LINK [2026-01-19]</p>
+            <p style="font-size: 1.5rem; color: rgba(255,255,255,0.8); font-family: var(--font-sub);">Electrical Engineering @ TCU</p>
+            <p style="color: var(--accent-color); font-family: var(--font-sub); font-size: 1rem;">> STATUS: OPTIMIZED_LINK [2026-01-19]</p>
         </header>
 
         <div class="content-section" id="about">
