@@ -7,10 +7,10 @@
     <style>
         /* --- THE EE THEME --- */
         :root {
-            --bg-color: #0a192f;       /* Deep Circuit Blue */
+            --bg-color: #121212;       /* Dark PCB Black */
             --text-color: #e0e0e0;     /* Solder Silver */
             --accent-color: #00ff41;   /* Oscilloscope Green */
-            --panel-bg: #112240;       /* Lighter Blue Panel */
+            --panel-bg: #1a1a1a;       /* Dark Grey Panel */
         }
 
         html, body {
@@ -29,9 +29,9 @@
             flex-wrap: wrap;
         }
 
-        /* LEFT SIDE: THE CONTENT (Now blue) */
+        /* LEFT SIDE: THE CONTENT (Now wider) */
         .left-pane {
-            flex: 1.6; 
+            flex: 1.6; /* Increased from 1.0 to take more space */
             min-width: 400px;
             background-color: var(--bg-color);
             padding: 60px;
@@ -40,9 +40,9 @@
             position: relative;
         }
 
-        /* RIGHT SIDE: THE IMAGE */
+        /* RIGHT SIDE: THE IMAGE (Now narrower) */
         .right-pane {
-            flex: 0.9; 
+            flex: 0.9; /* Decreased to prioritize content space */
             min-width: 300px;
             position: relative;
             background-image: url('profile.png');
@@ -53,13 +53,12 @@
         }
 
         /* --- THE SEAMLESS FADE EFFECT --- */
-        /* This now fades from the new blue color into the image */
         .right-pane::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            width: 50%; 
+            width: 50%; /* Widened fade for the new proportions */
             height: 100%;
             background: linear-gradient(to right, var(--bg-color), transparent);
             z-index: 2;
@@ -84,7 +83,7 @@
         }
         .project-card:hover {
             transform: translateX(10px);
-            background-color: #1d2d50;
+            background-color: #222;
         }
 
         /* BUTTONS */
@@ -166,7 +165,7 @@
             <h2>01. // THE ENGINEER</h2>
             <p>
                 As an Electrical Engineering student at <strong>Texas Christian University (TCU)</strong>, 
-                I focus on designing efficient, data-driven systems. 
+                I focus on designing efficient, data-driven systems[cite: 3, 7]. 
                 My current coursework in <strong>Circuit Analysis & Design I</strong> and <strong>Differential Equations</strong> 
                 forms the mathematical backbone of my approach to embedded systems and control logic.
             </p>
@@ -192,7 +191,7 @@
         </section>
 
         <footer style="font-size: 0.8em; color: #666; font-family: 'Courier New'; border-top: 1px solid #333; padding-top: 20px;">
-            <p>SYSTEM ARCHITECT: VICTOR IYANUOLUWA AKANBI [ID: 110558240]</p>
+            <p>SYSTEM ARCHITECT: VICTOR IYANUOLUWA AKANBI [ID: 110558240]</p> [cite: 4]
         </footer>
     </div>
 
