@@ -13,6 +13,10 @@
             --card-bg: #1e1e1e;        /* Dark Grey Component */
         }
 
+        html {
+            scroll-behavior: smooth; /* Smooth scrolling */
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
@@ -26,8 +30,6 @@
         h1, h2, h3 {
             font-family: 'Courier New', Courier, monospace; 
             color: var(--accent-color);
-            border-bottom: 1px solid var(--accent-color);
-            padding-bottom: 10px;
         }
 
         .container {
@@ -35,20 +37,76 @@
             margin: 0 auto;
         }
 
+        /* --- NEW: PROFILE PHOTO STYLES --- */
+        .profile-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .profile-pic {
+            width: 160px;
+            height: 160px;
+            object-fit: cover; /* Ensures photo doesn't stretch */
+            border-radius: 50%; /* Makes it a circle */
+            border: 3px solid var(--accent-color);
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.2); /* Subtle glow */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Interactive Hover Effect on Face */
+        .profile-pic:hover {
+            transform: scale(1.05); /* Slight zoom */
+            box-shadow: 0 0 25px var(--accent-color); /* Bright LED glow */
+            cursor: pointer;
+        }
+
+        /* --- TYPEWRITER ANIMATION --- */
+        .typewriter h1 {
+            overflow: hidden; 
+            border-right: .15em solid var(--accent-color); 
+            white-space: nowrap; 
+            margin: 0 auto; 
+            animation: 
+                typing 3.5s steps(40, end),
+                blink-caret .75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--accent-color); }
+        }
+
         /* Navigation Bar */
         nav {
             margin-bottom: 40px;
             text-align: right;
+            padding-top: 10px;
         }
         nav a {
             color: var(--text-color);
             margin-left: 20px;
             text-decoration: none;
             font-family: 'Courier New', monospace;
+            position: relative;
         }
-        nav a:hover {
-            color: var(--accent-color);
-            text-decoration: underline;
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--accent-color);
+            transition: width 0.3s;
+        }
+        nav a:hover::after {
+            width: 100%;
         }
 
         /* Project Card Styling */
@@ -58,7 +116,13 @@
             padding: 20px;
             margin-bottom: 20px;
             border-radius: 5px;
-            border-left: 5px solid var(--accent-color); /* The "Resistor Band" look */
+            border-left: 5px solid var(--accent-color);
+            transition: transform 0.2s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px); /* Moves up slightly */
+            border-color: #555;
         }
         
         .btn {
@@ -71,19 +135,30 @@
             margin-top: 10px;
             font-family: 'Courier New', monospace;
             font-weight: bold;
+            transition: all 0.3s ease;
         }
+        
         .btn:hover {
             background-color: var(--accent-color);
             color: #000;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.4);
         }
 
-        /* Footer */
         footer {
             margin-top: 50px;
             text-align: center;
             font-size: 0.8em;
             color: #666;
             font-family: 'Courier New', monospace;
+        }
+        
+        @media (max-width: 600px) {
+            .typewriter h1 {
+                font-size: 1.5rem;
+                white-space: normal;
+                border: none;
+                animation: none;
+            }
         }
     </style>
 </head>
@@ -93,27 +168,30 @@
     <nav>
         <a href="#about">01. About</a>
         <a href="#projects">02. Projects</a>
-        <a href="#contact">03. Contact</a>
+        <a href="#contact">03. Connect</a>
     </nav>
 
-    <header>
-        <h1>Victor Akanbi.</h1>
-        <p style="font-size: 1.2em;">Electrical Engineering Student @ TCU | Exploring Control Systems & Analog Design</p>
+    <header style="text-align: center; margin-bottom: 50px;">
+        <div class="profile-container">
+            <img src="profile.png" alt="Victor Akanbi" class="profile-pic">
+        </div>
+
+        <div class="typewriter">
+            <h1>Hello, I'm Victor Akanbi.</h1>
+        </div>
+        <p style="font-size: 1.2em; color: #aaa;">Electrical Engineering Student @ TCU</p>
     </header>
 
     <section id="about">
         <h2>01. About Me</h2>
         <p>
-            Hi, I’m Victor. I’ve always been the person who takes things apart to see how they work. 
+            I’ve always been the person who takes things apart to see how they work. 
             Now, as an Electrical Engineering undergraduate, I’m learning how to put them back together better than they were before.
         </p>
         <p>
             Currently, I am diving deep into <strong>Circuit Analysis</strong> and <strong>Applied Programming</strong>. 
             My passion lies in the intersection of hardware and code—taking mathematical concepts from <em>Differential Equations</em> 
             and turning them into physical, moving systems.
-        </p>
-        <p>
-            <em>Fun fact: When I'm not debugging circuits, I'm usually [Insert Hobby Here].</em>
         </p>
     </section>
 
@@ -131,9 +209,9 @@
         </div>
 
         <div class="project-card">
-            <h3>Coming Soon: PCB Design</h3>
-            <p><strong>Tech Stack:</strong> Altium / KiCad</p>
-            <p>Currently working on a custom PCB layout for a power regulation circuit.</p>
+            <h3>PCB Power Regulation Design</h3>
+            <p><strong>Tech Stack:</strong> Altium Designer / KiCad</p>
+            <p>Currently designing a custom PCB layout to regulate 9V battery input to stable 5V/3.3V logic levels.</p>
         </div>
     </section>
 
@@ -142,7 +220,8 @@
         <p>I am currently open to internships and collaborative projects.</p>
         <p>
             <a href="mailto:your.email@tcu.edu" class="btn">Email Me</a>
-            <a href="https://linkedin.com/in/yourprofile" class="btn">LinkedIn</a>
+            <a href="https://linkedin.com" class="btn">LinkedIn</a>
+            <a href="https://github.com" class="btn">GitHub</a>
         </p>
     </section>
 
