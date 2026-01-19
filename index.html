@@ -5,14 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Victor Iyanuoluwa Akanbi | Electrical Engineer</title>
     <style>
-        /* --- THE SUIT BLUE THEME --- */
+        /* --- THE EE THEME --- */
         :root {
-            /* This is a richer, more vibrant Navy sampled from your suit */
-            --bg-color: #0A192F;       
-            --text-color: #F8F9FA;     
-            --accent-color: #00FF41;   
-            /* Lighter panel color to prevent the "dim" look */
-            --panel-bg: rgba(17, 34, 64, 0.7); 
+            --bg-color: #0a192f;       /* Deep Circuit Blue */
+            --text-color: #e0e0e0;     /* Solder Silver */
+            --accent-color: #00ff41;   /* Oscilloscope Green */
+            --panel-bg: #112240;       /* Lighter Blue Panel */
         }
 
         html, body {
@@ -31,7 +29,7 @@
             flex-wrap: wrap;
         }
 
-        /* LEFT SIDE: THE CONTENT (Wide Ratio) */
+        /* LEFT SIDE: THE CONTENT (Now blue) */
         .left-pane {
             flex: 1.6; 
             min-width: 400px;
@@ -44,7 +42,7 @@
 
         /* RIGHT SIDE: THE IMAGE */
         .right-pane {
-            flex: 0.9;
+            flex: 0.9; 
             min-width: 300px;
             position: relative;
             background-image: url('profile.png');
@@ -54,13 +52,14 @@
             z-index: 1;
         }
 
-        /* --- THE SEAMLESS FADE --- */
+        /* --- THE SEAMLESS FADE EFFECT --- */
+        /* This now fades from the new blue color into the image */
         .right-pane::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            width: 70%; /* Slightly wider fade for a smoother transition */
+            width: 50%; 
             height: 100%;
             background: linear-gradient(to right, var(--bg-color), transparent);
             z-index: 2;
@@ -71,31 +70,27 @@
             font-family: 'Courier New', Courier, monospace; 
             color: var(--accent-color);
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
         }
 
-        /* IMPROVED PROJECT CARDS */
+        /* CARD STYLES */
         .project-card {
             background-color: var(--panel-bg);
             border-left: 4px solid var(--accent-color);
             padding: 25px;
             margin-bottom: 35px;
             border-radius: 4px;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-            /* Subtle border helps the card stand out from the navy background */
-            border: 1px solid rgba(0, 255, 65, 0.1);
+            transition: transform 0.2s ease;
         }
         .project-card:hover {
             transform: translateX(10px);
-            background-color: rgba(23, 42, 69, 0.9);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            background-color: #1d2d50;
         }
 
         /* BUTTONS */
         .btn {
             display: inline-block;
-            border: 2px solid var(--accent-color);
+            border: 1px solid var(--accent-color);
             color: var(--accent-color);
             padding: 12px 24px;
             text-decoration: none;
@@ -103,12 +98,10 @@
             font-family: 'Courier New', monospace;
             font-weight: bold;
             transition: all 0.3s;
-            background: transparent;
         }
         .btn:hover {
             background-color: var(--accent-color);
-            color: var(--bg-color);
-            box-shadow: 0 0 20px rgba(0, 255, 65, 0.4);
+            color: #000;
         }
 
         /* TYPEWRITER EFFECT */
@@ -126,7 +119,7 @@
 
         nav { margin-bottom: 70px; }
         nav a {
-            color: rgba(255,255,255,0.7);
+            color: #888;
             text-decoration: none;
             margin-right: 25px;
             font-family: 'Courier New', monospace;
@@ -134,22 +127,24 @@
         }
         nav a:hover { color: var(--accent-color); }
 
-        /* MOBILE FIXES */
+        /* MOBILE ADJUSTMENTS */
         @media (max-width: 768px) {
             .split-container { flex-direction: column-reverse; }
             .right-pane { height: 450px; width: 100%; }
             .right-pane::before {
                 width: 100%;
-                height: 60%;
+                height: 40%;
                 background: linear-gradient(to top, var(--bg-color), transparent);
             }
             .left-pane { width: 100%; padding: 40px 25px; }
+            .typewriter h1 { white-space: normal; border: none; animation: none; }
         }
     </style>
 </head>
 <body>
 
 <div class="split-container">
+    
     <div class="left-pane">
         <nav>
             <a href="#about">01. ABOUT</a>
@@ -161,16 +156,19 @@
             <div class="typewriter">
                 <h1>VICTOR AKANBI</h1>
             </div>
-            <p style="font-size: 1.3em; color: rgba(255,255,255,0.9);">Electrical Engineering @ TCU</p>
+            <p style="font-size: 1.3em; color: #bbb;">Engineering Electrical BS Student @ TCU</p>
             <p style="color: var(--accent-color); font-family: 'Courier New'; font-size: 0.9em;">
-                > SYSTEM STATUS: OPTIMIZED
+                > SYSTEM STATUS: ONLINE [2026-01-19]
             </p>
         </header>
 
         <section id="about">
             <h2>01. // THE ENGINEER</h2>
             <p>
-                As an <strong>Engineering Electrical BS</strong> student at <strong>TCU</strong>, I apply analytical precision to real-world hardware challenges[cite: 2, 7]. Currently focused on the integration of <strong>Circuit Analysis</strong> and <strong>Applied Programming</strong> to develop responsive, intelligent systems.
+                As an Electrical Engineering student at <strong>Texas Christian University (TCU)</strong>, 
+                I focus on designing efficient, data-driven systems. 
+                My current coursework in <strong>Circuit Analysis & Design I</strong> and <strong>Differential Equations</strong> 
+                forms the mathematical backbone of my approach to embedded systems and control logic.
             </p>
         </section>
 
@@ -178,9 +176,9 @@
             <h2>02. // SELECTED PROJECTS</h2>
             <div class="project-card">
                 <h3>Adaptive Ambient Lighting Control</h3>
-                <p style="font-size: 0.8em; color: rgba(255,255,255,0.6);">STATUS: OPERATIONAL | SPRING 2026</p>
+                <p style="font-size: 0.8em; color: #888;">STATUS: OPERATIONAL | SPRING 2026</p>
                 <p>
-                    A closed-loop system that modulates LED intensity based on real-time ADC sensor data, utilizing PWM for efficient power management.
+                    Developed a closed-loop control system utilizing LDR sensors and PWM-driven LEDs to stabilize luminosity levels.
                 </p>
                 <a href="#" class="btn">INITIALIZE REPORT ></a>
             </div>
@@ -188,16 +186,18 @@
 
         <section id="contact" style="margin-top: 80px; margin-bottom: 50px;">
             <h2>03. // TRANSMISSION LINK</h2>
-            <p>Ready to apply my background in <strong>Statistics</strong> and <strong>Differential Equations</strong> to high-impact engineering roles[cite: 2, 7].</p>
+            <p>Seeking high-impact opportunities to apply my background in <strong>Circuit Analysis</strong> and <strong>MATLAB</strong>.</p>
             <a href="mailto:victor.akanbi@tcu.edu" class="btn">EMAIL LINK</a>
             <a href="https://linkedin.com" class="btn">LINKEDIN</a>
         </section>
 
-        <footer style="font-size: 0.8em; color: rgba(255,255,255,0.5); font-family: 'Courier New'; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
-            <p>DESIGNED BY VICTOR IYANUOLUWA AKANBI | STUDENT ID: 110558240 [cite: 4]</p>
+        <footer style="font-size: 0.8em; color: #666; font-family: 'Courier New'; border-top: 1px solid #333; padding-top: 20px;">
+            <p>SYSTEM ARCHITECT: VICTOR IYANUOLUWA AKANBI [ID: 110558240]</p>
         </footer>
     </div>
+
     <div class="right-pane"></div>
+
 </div>
 
 </body>
