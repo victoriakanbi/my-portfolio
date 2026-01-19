@@ -10,6 +10,7 @@
             --bg-color: #0A192F;       /* Deep Suit Navy Blue */
             --text-color: #e0e0e0;     /* Solder Silver */
             --accent-color: #00ff41;   /* Oscilloscope Green */
+        }
 
         html, body {
             margin: 0;
@@ -27,21 +28,21 @@
             flex-wrap: wrap;
         }
 
-        /* LEFT SIDE: WIDER CONTENT AREA */
+        /* LEFT SIDE: WIDE CONTENT AREA */
         .left-pane {
-            flex: 2; /* Increased to take significantly more space */
+            flex: 2.2; /* Maximum room for technical text */
             min-width: 450px;
             background-color: var(--bg-color);
             padding: 60px;
             box-sizing: border-box;
             z-index: 3;
             position: relative;
-            text-align: left; /* Aligned Left as requested */
+            text-align: left; 
         }
 
         /* RIGHT SIDE: PROFILE IMAGE */
         .right-pane {
-            flex: 1; /* Narrower to prioritize text space */
+            flex: 0.8; /* Narrow profile focus */
             min-width: 300px;
             position: relative;
             background-image: url('profile.png');
@@ -51,7 +52,7 @@
             z-index: 1;
         }
 
-        /* --- ENHANCED SEAMLESS GRADIENT --- */
+        /* --- SEAMLESS HIGH-DENSITY GRADIENT --- */
         .right-pane::before {
             content: '';
             position: absolute;
@@ -59,12 +60,12 @@
             left: 0;
             width: 100%; 
             height: 100%;
-            /* Multi-stop gradient for a much smoother "bleed" effect */
+            /* Sophisticated blend from solid blue to transparent */
             background: linear-gradient(to right, 
                 var(--bg-color) 0%, 
-                var(--bg-color) 10%, 
-                rgba(10, 25, 47, 0.8) 30%, 
-                rgba(10, 25, 47, 0) 80%);
+                var(--bg-color) 15%, 
+                rgba(10, 25, 47, 0.7) 40%, 
+                rgba(10, 25, 47, 0) 90%);
             z-index: 2;
         }
 
@@ -76,19 +77,16 @@
             letter-spacing: 1px;
         }
 
-        /* CARD STYLES */
+        /* NO-PANEL PROJECT STYLES */
         .project-card {
-            background-color: var(--panel-bg);
-            border-left: 4px solid var(--accent-color);
-            padding: 25px;
-            margin-bottom: 35px;
-            border-radius: 4px;
-            transition: transform 0.2s ease;
-            backdrop-filter: blur(5px);
+            background-color: transparent; /* PANEL REMOVED */
+            border-left: 3px solid var(--accent-color);
+            padding: 10px 0 10px 25px; /* Spacing shifted to favor text */
+            margin-bottom: 45px;
+            transition: transform 0.3s ease;
         }
         .project-card:hover {
             transform: translateX(10px);
-            background-color: rgba(17, 34, 64, 0.8);
         }
 
         /* BUTTONS */
@@ -96,9 +94,9 @@
             display: inline-block;
             border: 1px solid var(--accent-color);
             color: var(--accent-color);
-            padding: 12px 24px;
+            padding: 10px 20px;
             text-decoration: none;
-            margin-top: 10px;
+            margin-top: 15px;
             font-family: 'Courier New', monospace;
             font-weight: bold;
             transition: all 0.3s;
@@ -106,9 +104,10 @@
         .btn:hover {
             background-color: var(--accent-color);
             color: var(--bg-color);
+            box-shadow: 0 0 15px var(--accent-color);
         }
 
-        /* TYPEWRITER EFFECT (Left Aligned) */
+        /* TYPEWRITER EFFECT */
         .typewriter h1 {
             overflow: hidden; 
             border-right: .15em solid var(--accent-color); 
@@ -116,33 +115,33 @@
             animation: typing 3.5s steps(30, end), blink-caret .75s step-end infinite;
             display: inline-block;
             max-width: 100%;
-            margin-right: auto;
         }
 
         @keyframes typing { from { width: 0 } to { width: 100% } }
         @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--accent-color); } }
 
-        /* CIRCLED TOP NAVIGATION */
+        /* CENTERED TOP NAVIGATION */
         nav { 
             margin-bottom: 70px; 
-            text-align: center; /* Keeping nav centered at top as circled in image */
+            text-align: center; 
         }
         nav a {
-            color: #888;
+            color: rgba(255, 255, 255, 0.5);
             text-decoration: none;
-            margin: 0 15px;
+            margin: 0 20px;
             font-family: 'Courier New', monospace;
             font-size: 0.9em;
+            transition: color 0.3s;
         }
         nav a:hover { color: var(--accent-color); }
 
-        /* MOBILE ADJUSTMENTS */
+        /* MOBILE OPTIMIZATION */
         @media (max-width: 768px) {
             .split-container { flex-direction: column-reverse; }
             .right-pane { height: 450px; width: 100%; }
             .right-pane::before {
                 width: 100%;
-                height: 50%;
+                height: 55%;
                 background: linear-gradient(to top, var(--bg-color), transparent);
             }
             .left-pane { width: 100%; padding: 40px 25px; }
@@ -165,7 +164,7 @@
             <div class="typewriter">
                 <h1>VICTOR AKANBI</h1>
             </div>
-            <p style="font-size: 1.3em; color: #bbb;">Engineering Electrical BS Student @ TCU</p> 
+            <p style="font-size: 1.3em; color: rgba(255,255,255,0.7);">Engineering Electrical BS Student @ TCU</p>
             <p style="color: var(--accent-color); font-family: 'Courier New'; font-size: 0.9em;">
                 > SYSTEM STATUS: ONLINE [2026-01-19]
             </p>
@@ -174,9 +173,9 @@
         <section id="about">
             <h2>01. // THE ENGINEER</h2>
             <p>
-                As an Electrical Engineering student at <strong>Texas Christian University (TCU)</strong>, 
-                I focus on designing efficient, data-driven systems. 
-                My current coursework in <strong>Circuit Analysis & Design I</strong> and <strong>Differential Equations</strong> 
+                As an Electrical Engineering student at <strong>Texas Christian University (TCU)</strong>[cite: 3], 
+                I focus on designing efficient, data-driven systems[cite: 7]. 
+                My current coursework in <strong>Circuit Analysis & Design I</strong> and <strong>Differential Equations</strong>  
                 forms the mathematical backbone of my approach to embedded systems and control logic.
             </p>
         </section>
@@ -185,7 +184,7 @@
             <h2>02. // SELECTED PROJECTS</h2>
             <div class="project-card">
                 <h3>Adaptive Ambient Lighting Control</h3>
-                <p style="font-size: 0.8em; color: #888;">STATUS: OPERATIONAL | SPRING 2026</p>
+                <p style="font-size: 0.8em; color: #888;">STATUS: OPERATIONAL | SPRING 2026 [cite: 5]</p>
                 <p>
                     Developed a closed-loop control system utilizing LDR sensors and PWM-driven LEDs to stabilize luminosity levels.
                 </p>
@@ -195,12 +194,12 @@
 
         <section id="contact" style="margin-top: 80px; margin-bottom: 50px;">
             <h2>03. // TRANSMISSION LINK</h2>
-            <p>Seeking high-impact opportunities to apply my background in <strong>Circuit Analysis</strong> and <strong>Applied Programming</strong>[cite: 2].</p>
+            <p>Ready to apply my background in <strong>Circuit Analysis</strong> and <strong>MATLAB</strong>  to industrial challenges.</p>
             <a href="mailto:victor.akanbi@tcu.edu" class="btn">EMAIL LINK</a>
             <a href="https://linkedin.com" class="btn">LINKEDIN</a>
         </section>
 
-        <footer style="font-size: 0.8em; color: #666; font-family: 'Courier New'; border-top: 1px solid #333; padding-top: 20px;">
+        <footer style="font-size: 0.8em; color: #666; font-family: 'Courier New'; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
             <p>SYSTEM ARCHITECT: VICTOR IYANUOLUWA AKANBI [ID: 110558240]</p> [cite: 4]
         </footer>
     </div>
