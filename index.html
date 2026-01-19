@@ -29,20 +29,21 @@
             flex-wrap: wrap;
         }
 
-        /* LEFT SIDE: THE CONTENT (Now wider) */
+        /* LEFT SIDE: THE CONTENT (Right Aligned) */
         .left-pane {
-            flex: 1.6; /* Increased from 1.0 to take more space */
+            flex: 1.6; 
             min-width: 400px;
             background-color: var(--bg-color);
             padding: 60px;
             box-sizing: border-box;
             z-index: 3;
             position: relative;
+            text-align: right; /* Aligns all text to the right */
         }
 
-        /* RIGHT SIDE: THE IMAGE (Now narrower) */
+        /* RIGHT SIDE: THE IMAGE */
         .right-pane {
-            flex: 0.9; /* Decreased to prioritize content space */
+            flex: 0.9; 
             min-width: 300px;
             position: relative;
             background-image: url('profile.png');
@@ -58,7 +59,7 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 50%; /* Widened fade for the new proportions */
+            width: 50%; 
             height: 100%;
             background: linear-gradient(to right, var(--bg-color), transparent);
             z-index: 2;
@@ -72,17 +73,18 @@
             letter-spacing: 1px;
         }
 
-        /* CARD STYLES */
+        /* CARD STYLES (Flipped to Right Alignment) */
         .project-card {
             background-color: var(--panel-bg);
-            border-left: 4px solid var(--accent-color);
+            border-right: 4px solid var(--accent-color); /* Border moved to right */
+            border-left: none;
             padding: 25px;
             margin-bottom: 35px;
             border-radius: 4px;
             transition: transform 0.2s ease;
         }
         .project-card:hover {
-            transform: translateX(10px);
+            transform: translateX(-10px); /* Slides toward the center */
             background-color: #222;
         }
 
@@ -103,7 +105,7 @@
             color: #000;
         }
 
-        /* TYPEWRITER EFFECT */
+        /* TYPEWRITER EFFECT (Adjusted for Right alignment) */
         .typewriter h1 {
             overflow: hidden; 
             border-right: .15em solid var(--accent-color); 
@@ -111,6 +113,7 @@
             animation: typing 3.5s steps(30, end), blink-caret .75s step-end infinite;
             display: inline-block;
             max-width: 100%;
+            margin-left: auto; /* Pushes the block to the right */
         }
 
         @keyframes typing { from { width: 0 } to { width: 100% } }
@@ -120,7 +123,8 @@
         nav a {
             color: #888;
             text-decoration: none;
-            margin-right: 25px;
+            margin-left: 25px; /* Margin moved to left for spacing on the right */
+            margin-right: 0;
             font-family: 'Courier New', monospace;
             font-size: 0.9em;
         }
@@ -135,8 +139,9 @@
                 height: 40%;
                 background: linear-gradient(to top, var(--bg-color), transparent);
             }
-            .left-pane { width: 100%; padding: 40px 25px; }
+            .left-pane { width: 100%; padding: 40px 25px; text-align: center; }
             .typewriter h1 { white-space: normal; border: none; animation: none; }
+            .project-card { border-right: none; border-top: 4px solid var(--accent-color); }
         }
     </style>
 </head>
@@ -155,7 +160,7 @@
             <div class="typewriter">
                 <h1>VICTOR AKANBI</h1>
             </div>
-            <p style="font-size: 1.3em; color: #bbb;">Engineering Electrical BS Student @ TCU</p>
+            [cite_start]<p style="font-size: 1.3em; color: #bbb;">Engineering Electrical BS Student @ TCU [cite: 7]</p>
             <p style="color: var(--accent-color); font-family: 'Courier New'; font-size: 0.9em;">
                 > SYSTEM STATUS: ONLINE [2026-01-19]
             </p>
@@ -164,9 +169,9 @@
         <section id="about">
             <h2>01. // THE ENGINEER</h2>
             <p>
-                As an Electrical Engineering student at <strong>Texas Christian University (TCU)</strong>, 
-                I focus on designing efficient, data-driven systems[cite: 3, 7]. 
-                My current coursework in <strong>Circuit Analysis & Design I</strong> and <strong>Differential Equations</strong> 
+                [cite_start]As an Electrical Engineering student at <strong>Texas Christian University (TCU)</strong>[cite: 3], 
+                [cite_start]I focus on designing efficient, data-driven systems[cite: 7]. 
+                [cite_start]My current coursework in <strong>Circuit Analysis & Design I</strong> and <strong>Differential Equations</strong> [cite: 2, 7] 
                 forms the mathematical backbone of my approach to embedded systems and control logic.
             </p>
         </section>
@@ -185,13 +190,13 @@
 
         <section id="contact" style="margin-top: 80px; margin-bottom: 50px;">
             <h2>03. // TRANSMISSION LINK</h2>
-            <p>Seeking high-impact opportunities to apply my background in <strong>Circuit Analysis</strong> and <strong>MATLAB</strong>.</p>
+            [cite_start]<p>Seeking high-impact opportunities to apply my background in <strong>Circuit Analysis</strong> and <strong>MATLAB</strong>[cite: 2].</p>
             <a href="mailto:victor.akanbi@tcu.edu" class="btn">EMAIL LINK</a>
             <a href="https://linkedin.com" class="btn">LINKEDIN</a>
         </section>
 
         <footer style="font-size: 0.8em; color: #666; font-family: 'Courier New'; border-top: 1px solid #333; padding-top: 20px;">
-            <p>SYSTEM ARCHITECT: VICTOR IYANUOLUWA AKANBI [ID: 110558240]</p> [cite: 4]
+            [cite_start]<p>SYSTEM ARCHITECT: VICTOR IYANUOLUWA AKANBI [ID: 110558240]</p> [cite: 4]
         </footer>
     </div>
 
