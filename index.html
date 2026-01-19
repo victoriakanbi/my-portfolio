@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Victor Iyanuoluwa Akanbi | Electrical Engineer</title>
     <style>
-        /* --- THE EE PROFESSIONAL THEME --- */
+        /* --- THE SUIT BLUE THEME --- */
         :root {
-            --bg-color: #001A33;       /* Deep Suit Blue / Navy */
-            --text-color: #f0f0f0;     /* Clean White */
-            --accent-color: #00ff41;   /* Oscilloscope Green */
-            --panel-bg: rgba(0, 40, 80, 0.6); /* Translucent Blue Panel */
+            /* This is a richer, more vibrant Navy sampled from your suit */
+            --bg-color: #0A192F;       
+            --text-color: #F8F9FA;     
+            --accent-color: #00FF41;   
+            /* Lighter panel color to prevent the "dim" look */
+            --panel-bg: rgba(17, 34, 64, 0.7); 
         }
 
         html, body {
@@ -29,7 +31,7 @@
             flex-wrap: wrap;
         }
 
-        /* LEFT SIDE: THE CONTENT (Wider Ratio) */
+        /* LEFT SIDE: THE CONTENT (Wide Ratio) */
         .left-pane {
             flex: 1.6; 
             min-width: 400px;
@@ -52,13 +54,13 @@
             z-index: 1;
         }
 
-        /* --- THE SEAMLESS FADE EFFECT (Blue to Transparent) --- */
+        /* --- THE SEAMLESS FADE --- */
         .right-pane::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            width: 60%; 
+            width: 70%; /* Slightly wider fade for a smoother transition */
             height: 100%;
             background: linear-gradient(to right, var(--bg-color), transparent);
             z-index: 2;
@@ -70,24 +72,24 @@
             color: var(--accent-color);
             text-transform: uppercase;
             letter-spacing: 2px;
-            text-shadow: 0 0 5px rgba(0, 255, 65, 0.3);
         }
 
-        /* CARD STYLES */
+        /* IMPROVED PROJECT CARDS */
         .project-card {
             background-color: var(--panel-bg);
             border-left: 4px solid var(--accent-color);
             padding: 25px;
             margin-bottom: 35px;
             border-radius: 4px;
-            backdrop-filter: blur(10px); /* Modern frosted glass look */
+            backdrop-filter: blur(10px);
             transition: all 0.3s ease;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            /* Subtle border helps the card stand out from the navy background */
+            border: 1px solid rgba(0, 255, 65, 0.1);
         }
         .project-card:hover {
             transform: translateX(10px);
-            background-color: rgba(0, 50, 100, 0.8);
-            box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
+            background-color: rgba(23, 42, 69, 0.9);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
         /* BUTTONS */
@@ -105,8 +107,8 @@
         }
         .btn:hover {
             background-color: var(--accent-color);
-            color: #001A33;
-            box-shadow: 0 0 15px var(--accent-color);
+            color: var(--bg-color);
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.4);
         }
 
         /* TYPEWRITER EFFECT */
@@ -124,33 +126,30 @@
 
         nav { margin-bottom: 70px; }
         nav a {
-            color: rgba(255,255,255,0.6);
+            color: rgba(255,255,255,0.7);
             text-decoration: none;
             margin-right: 25px;
             font-family: 'Courier New', monospace;
             font-size: 0.9em;
-            letter-spacing: 1px;
         }
         nav a:hover { color: var(--accent-color); }
 
-        /* MOBILE ADJUSTMENTS */
+        /* MOBILE FIXES */
         @media (max-width: 768px) {
             .split-container { flex-direction: column-reverse; }
             .right-pane { height: 450px; width: 100%; }
             .right-pane::before {
                 width: 100%;
-                height: 50%;
+                height: 60%;
                 background: linear-gradient(to top, var(--bg-color), transparent);
             }
             .left-pane { width: 100%; padding: 40px 25px; }
-            .typewriter h1 { white-space: normal; border: none; animation: none; }
         }
     </style>
 </head>
 <body>
 
 <div class="split-container">
-    
     <div class="left-pane">
         <nav>
             <a href="#about">01. ABOUT</a>
@@ -162,7 +161,7 @@
             <div class="typewriter">
                 <h1>VICTOR AKANBI</h1>
             </div>
-            <p style="font-size: 1.3em; color: rgba(255,255,255,0.8);">Electrical Engineering @ TCU</p>
+            <p style="font-size: 1.3em; color: rgba(255,255,255,0.9);">Electrical Engineering @ TCU</p>
             <p style="color: var(--accent-color); font-family: 'Courier New'; font-size: 0.9em;">
                 > SYSTEM STATUS: OPTIMIZED
             </p>
@@ -171,10 +170,7 @@
         <section id="about">
             <h2>01. // THE ENGINEER</h2>
             <p>
-                As a student in the <strong>Engineering Electrical BS</strong> program at <strong>TCU</strong>, 
-                I apply analytical precision to real-world hardware challenges. My current focus involves 
-                integrating <strong>Circuit Analysis</strong>  and <strong>Applied Programming</strong>  
-                to develop responsive, intelligent systems.
+                As an <strong>Engineering Electrical BS</strong> student at <strong>TCU</strong>, I apply analytical precision to real-world hardware challenges[cite: 2, 7]. Currently focused on the integration of <strong>Circuit Analysis</strong> and <strong>Applied Programming</strong> to develop responsive, intelligent systems.
             </p>
         </section>
 
@@ -182,7 +178,7 @@
             <h2>02. // SELECTED PROJECTS</h2>
             <div class="project-card">
                 <h3>Adaptive Ambient Lighting Control</h3>
-                <p style="font-size: 0.8em; color: rgba(255,255,255,0.5);">STATUS: OPERATIONAL</p>
+                <p style="font-size: 0.8em; color: rgba(255,255,255,0.6);">STATUS: OPERATIONAL | SPRING 2026</p>
                 <p>
                     A closed-loop system that modulates LED intensity based on real-time ADC sensor data, utilizing PWM for efficient power management.
                 </p>
@@ -192,18 +188,16 @@
 
         <section id="contact" style="margin-top: 80px; margin-bottom: 50px;">
             <h2>03. // TRANSMISSION LINK</h2>
-            <p>Exploring high-impact internships where I can leverage my background in <strong>Statistics</strong>  and <strong>Differential Equations</strong>.</p>
+            <p>Ready to apply my background in <strong>Statistics</strong> and <strong>Differential Equations</strong> to high-impact engineering roles[cite: 2, 7].</p>
             <a href="mailto:victor.akanbi@tcu.edu" class="btn">EMAIL LINK</a>
             <a href="https://linkedin.com" class="btn">LINKEDIN</a>
         </section>
 
-        <footer style="font-size: 0.8em; color: rgba(255,255,255,0.4); font-family: 'Courier New'; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
-            <p>DESIGNED BY VICTOR IYANUOLUWA AKANBI | ID: 110558240 [cite: 4]</p>
+        <footer style="font-size: 0.8em; color: rgba(255,255,255,0.5); font-family: 'Courier New'; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+            <p>DESIGNED BY VICTOR IYANUOLUWA AKANBI | STUDENT ID: 110558240 [cite: 4]</p>
         </footer>
     </div>
-
     <div class="right-pane"></div>
-
 </div>
 
 </body>
