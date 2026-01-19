@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Victor Iyanuoluwa Akanbi | Electrical Engineer</title>
     <style>
-        /* --- THE PCB BLACK THEME --- */
+        /* --- THE ORIGINAL PCB BLACK THEME --- */
         :root {
             --bg-color: #121212;
             --text-color: #e0e0e0;
@@ -13,191 +13,160 @@
         }
 
         html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
+            margin: 0; padding: 0; height: 100%;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            overflow-x: hidden;
+            background-color: var(--bg-color); color: var(--text-color);
         }
 
-        /* --- THE SPLIT LAYOUT --- */
-        .split-container {
-            display: flex;
-            min-height: 100vh;
-            flex-wrap: wrap;
-        }
+        .split-container { display: flex; min-height: 100vh; flex-wrap: wrap; }
 
         /* LEFT SIDE: WIDE CONTENT AREA */
         .left-pane {
-            flex: 2.2; 
-            min-width: 450px;
-            background-color: var(--bg-color);
-            padding: 60px;
-            box-sizing: border-box;
-            z-index: 3;
-            position: relative;
-            text-align: left; 
+            flex: 2.2; min-width: 450px; background-color: var(--bg-color);
+            padding: 60px; box-sizing: border-box; z-index: 3; position: relative;
         }
 
         /* RIGHT SIDE: PROFILE IMAGE */
         .right-pane {
-            flex: 0.8; 
-            min-width: 300px;
-            position: relative;
-            background-image: url('profile.png');
-            background-size: cover;
-            background-position: center top;
-            background-repeat: no-repeat;
-            z-index: 1;
+            flex: 0.8; min-width: 300px; position: relative;
+            background-image: url('profile.png'); background-size: cover;
+            background-position: center top; background-repeat: no-repeat; z-index: 1;
         }
 
-        /* --- SEAMLESS GRADIENT --- */
         .right-pane::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to right, 
-                var(--bg-color) 0%, 
-                var(--bg-color) 15%, 
-                rgba(18, 18, 18, 0.7) 40%, 
-                rgba(18, 18, 18, 0) 90%);
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to right, var(--bg-color) 0%, var(--bg-color) 15%, rgba(18, 18, 18, 0.7) 40%, rgba(18, 18, 18, 0) 90%);
             z-index: 2;
         }
 
-        /* --- ELECTRICAL SYMBOL WATERMARKS --- */
-        .symbol {
-            position: absolute;
-            opacity: 0.05;
-            color: var(--accent-color);
-            font-family: serif;
-            z-index: 0;
-            pointer-events: none;
+        /* --- ALTERNATING SECTION LOGIC --- */
+        .content-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+            margin-bottom: 100px;
         }
-        .sym-ground { bottom: 10%; left: 5%; font-size: 150px; }
-        .sym-resistor { top: 20%; left: 80%; font-size: 100px; transform: rotate(90deg); }
+
+        /* This flips the layout for every SECOND section */
+        .content-section:nth-of-type(even) {
+            flex-direction: row-reverse;
+        }
+
+        .section-text { flex: 2; text-align: left; }
+        .content-section:nth-of-type(even) .section-text { text-align: right; }
+
+        .section-symbol {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            opacity: 0.6;
+            filter: drop-shadow(0 0 5px var(--accent-color));
+        }
 
         /* ENGINEERING TYPOGRAPHY */
-        h1, h2, h3 {
-            font-family: 'Courier New', Courier, monospace; 
-            color: var(--accent-color);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+        h1, h2, h3 { font-family: 'Courier New', Courier, monospace; color: var(--accent-color); text-transform: uppercase; }
 
-        /* PROJECT CARDS */
         .project-card {
-            background-color: transparent; 
             border-left: 3px solid var(--accent-color);
-            padding: 10px 0 10px 25px; 
-            margin-bottom: 45px;
-            transition: transform 0.3s ease;
+            padding: 10px 0 10px 25px; margin-bottom: 20px;
         }
-        .project-card:hover { transform: translateX(10px); }
+        .content-section:nth-of-type(even) .project-card {
+            border-left: none; border-right: 3px solid var(--accent-color);
+            padding: 10px 25px 10px 0;
+        }
 
-        /* BUTTONS */
         .btn {
-            display: inline-block;
-            border: 1px solid var(--accent-color);
-            color: var(--accent-color);
-            padding: 10px 20px;
-            text-decoration: none;
-            margin-top: 15px;
-            font-family: 'Courier New', monospace;
-            font-weight: bold;
-            transition: all 0.3s;
+            display: inline-block; border: 1px solid var(--accent-color); color: var(--accent-color);
+            padding: 10px 20px; text-decoration: none; margin-top: 15px;
+            font-family: 'Courier New', monospace; font-weight: bold;
         }
-        .btn:hover { background-color: var(--accent-color); color: var(--bg-color); box-shadow: 0 0 15px var(--accent-color); }
 
-        /* TYPEWRITER EFFECT */
         .typewriter h1 {
-            overflow: hidden; 
-            border-right: .15em solid var(--accent-color); 
-            white-space: nowrap; 
+            overflow: hidden; border-right: .15em solid var(--accent-color); white-space: nowrap; 
             animation: typing 3.5s steps(30, end), blink-caret .75s step-end infinite;
-            display: inline-block;
-            max-width: 100%;
+            display: inline-block; max-width: 100%;
         }
+
         @keyframes typing { from { width: 0 } to { width: 100% } }
         @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--accent-color); } }
 
         nav { margin-bottom: 70px; text-align: center; }
-        nav a { color: rgba(255, 255, 255, 0.5); text-decoration: none; margin: 0 20px; font-family: 'Courier New', monospace; font-size: 0.9em; transition: color 0.3s; }
+        nav a { color: rgba(255, 255, 255, 0.5); text-decoration: none; margin: 0 20px; font-family: 'Courier New', monospace; }
         nav a:hover { color: var(--accent-color); }
 
-        footer { font-size: 0.8em; color: #666; font-family: 'Courier New'; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
+        footer { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; font-size: 0.8em; color: #666; font-family: 'Courier New'; }
 
-        /* MOBILE ADJUSTMENTS */
         @media (max-width: 768px) {
-            .split-container { flex-direction: column-reverse; }
-            .right-pane { height: 450px; width: 100%; }
-            .right-pane::before { width: 100%; height: 55%; background: linear-gradient(to top, var(--bg-color), transparent); }
-            .left-pane { width: 100%; padding: 40px 25px; }
-            .typewriter h1 { white-space: normal; border: none; animation: none; }
+            .content-section, .content-section:nth-of-type(even) { flex-direction: column; text-align: center; }
+            .section-symbol { order: -1; margin-bottom: 20px; }
         }
     </style>
 </head>
 <body>
 
 <div class="split-container">
-    
     <div class="left-pane">
-        <div class="symbol sym-ground">⏚</div>
-        <div class="symbol sym-resistor">/\/</div>
-
         <nav>
             <a href="#about">01. ABOUT</a>
             <a href="#projects">02. PROJECTS</a>
             <a href="#contact">03. CONTACT</a>
         </nav>
 
-        <header style="margin-bottom: 80px;">
-            <div class="typewriter">
-                <h1>VICTOR AKANBI</h1>
-            </div>
-            <p style="font-size: 1.3em; color: rgba(255,255,255,0.7);">Engineering Electrical BS Student @ TCU</p> [cite: 2, 3]
-            <p style="color: var(--accent-color); font-family: 'Courier New'; font-size: 0.9em;">
-                > SYSTEM STATUS: ONLINE [2026-01-19]
-            </p> [cite: 1, 5]
+        <header style="margin-bottom: 100px;">
+            <div class="typewriter"><h1>VICTOR AKANBI</h1></div>
+            <p style="font-size: 1.3em; color: rgba(255,255,255,0.7);">Engineering Electrical BS Student @ TCU</p> 
+            <p style="color: var(--accent-color); font-family: 'Courier New'; font-size: 0.9em;">> SYSTEM STATUS: ONLINE [2026-01-19]</p> [cite: 1, 5]
         </header>
 
-        <section id="about">
-            <h2>01. // THE ENGINEER</h2>
-            <p>
-                As an Electrical Engineering student at <strong>Texas Christian University (TCU)</strong>, 
-                I focus on designing efficient, data-driven systems[cite: 2, 7]. 
-                My current coursework in <strong>Circuit Analysis & Design I</strong>  and <strong>Differential Equations</strong> [cite: 7] 
-                forms the mathematical backbone of my approach to embedded systems and control logic.
-            </p>
-        </section>
-
-        <section id="projects" style="margin-top: 80px;">
-            <h2>02. // SELECTED PROJECTS</h2>
-            <div class="project-card">
-                <h3>Adaptive Ambient Lighting Control ⧉</h3>
-                <p style="font-size: 0.8em; color: #888;">STATUS: OPERATIONAL | SPRING 2026</p> [cite: 5]
-                <p>
-                    Developed a closed-loop control system utilizing LDR sensors and PWM-driven LEDs to stabilize luminosity levels.
-                </p>
-                <a href="#" class="btn">INITIALIZE REPORT ></a>
+        <div class="content-section" id="about">
+            <div class="section-text">
+                <h2>01. // THE ENGINEER</h2>
+                <p>As an Electrical Engineering student at <strong>Texas Christian University (TCU)</strong>, I focus on designing efficient, data-driven systems[cite: 3, 7]. My academic background includes **Circuit Analysis**, **Applied Programming-Matlab**, and **Differential Equations**.</p>
             </div>
-        </section>
+            <div class="section-symbol">
+                <svg width="100" height="60" viewBox="0 0 100 60" stroke="#00ff41" stroke-width="2" fill="none">
+                    <path d="M0,30 L20,30 L25,10 L35,50 L45,10 L55,50 L65,10 L75,50 L80,30 L100,30" />
+                </svg>
+            </div>
+        </div>
 
-        <section id="contact" style="margin-top: 80px; margin-bottom: 50px;">
-            <h2>03. // TRANSMISSION LINK</h2>
-            <p>Ready to apply my background in <strong>Circuit Analysis</strong>  and <strong>MATLAB</strong>  to industrial challenges.</p>
-            <a href="mailto:victor.akanbi@tcu.edu" class="btn">EMAIL LINK</a>
-            <a href="https://linkedin.com" class="btn">LINKEDIN</a>
-        </section>
+        <div class="content-section" id="projects">
+            <div class="section-text">
+                <h2>02. // SELECTED PROJECTS</h2>
+                <div class="project-card">
+                    <h3>Adaptive Ambient Lighting Control</h3>
+                    <p style="font-size: 0.8em; color: #888;">STATUS: OPERATIONAL | SPRING 2026</p> [cite: 5]
+                    <p>A closed-loop system using LDR sensors and PWM-driven LEDs to stabilize luminosity[cite: 2].</p>
+                    <a href="#" class="btn">INITIALIZE REPORT ></a>
+                </div>
+            </div>
+            <div class="section-symbol">
+                <svg width="100" height="60" viewBox="0 0 100 60" stroke="#00ff41" stroke-width="2" fill="none">
+                    <path d="M0,30 L45,30 M55,30 L100,30 M45,10 L45,50 M55,10 L55,50" />
+                </svg>
+            </div>
+        </div>
+
+        <div class="content-section" id="contact">
+            <div class="section-text">
+                <h2>03. // TRANSMISSION LINK</h2>
+                <p>Seeking opportunities to apply my background in <strong>Circuit Analysis</strong>.</p>
+                <a href="mailto:victor.akanbi@tcu.edu" class="btn">EMAIL LINK</a>
+                <a href="https://linkedin.com" class="btn">LINKEDIN</a>
+            </div>
+            <div class="section-symbol">
+                <svg width="100" height="60" viewBox="0 0 100 60" stroke="#00ff41" stroke-width="2" fill="none">
+                    <path d="M50,0 L50,40 M20,40 L80,40 M35,50 L65,50 M45,60 L55,60" />
+                </svg>
+            </div>
+        </div>
 
         <footer>
             <p>SYSTEM ARCHITECT: VICTOR IYANUOLUWA AKANBI [ID: 110558240]</p> 
         </footer>
     </div>
-
     <div class="right-pane"></div>
-
 </div>
 
 </body>
