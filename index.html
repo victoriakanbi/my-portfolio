@@ -29,27 +29,26 @@
             flex-wrap: wrap;
         }
 
-        /* LEFT SIDE: THE CONTENT */
+        /* LEFT SIDE: THE CONTENT (Now wider) */
         .left-pane {
-            flex: 1;
-            min-width: 350px;
+            flex: 1.6; /* Increased from 1.0 to take more space */
+            min-width: 400px;
             background-color: var(--bg-color);
-            padding: 50px;
+            padding: 60px;
             box-sizing: border-box;
-            z-index: 3; /* Stays above the fade */
+            z-index: 3;
             position: relative;
         }
 
-        /* RIGHT SIDE: THE IMAGE + GRADIENT FADE */
+        /* RIGHT SIDE: THE IMAGE (Now narrower) */
         .right-pane {
-            flex: 1.2; /* Slightly wider for the portrait */
-            min-width: 350px;
+            flex: 0.9; /* Decreased to prioritize content space */
+            min-width: 300px;
             position: relative;
             background-image: url('profile.png');
             background-size: cover;
             background-position: center top;
             background-repeat: no-repeat;
-            /* background-attachment: fixed; REMOVED to allow normal scrolling */
             z-index: 1;
         }
 
@@ -59,9 +58,8 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 40%; /* Adjust this to control how far the fade goes into the image */
+            width: 50%; /* Widened fade for the new proportions */
             height: 100%;
-            /* Fades from the background black to total transparency */
             background: linear-gradient(to right, var(--bg-color), transparent);
             z-index: 2;
         }
@@ -78,14 +76,14 @@
         .project-card {
             background-color: var(--panel-bg);
             border-left: 4px solid var(--accent-color);
-            padding: 20px;
-            margin-bottom: 30px;
+            padding: 25px;
+            margin-bottom: 35px;
             border-radius: 4px;
             transition: transform 0.2s ease;
         }
         .project-card:hover {
             transform: translateX(10px);
-            background-color: #252525;
+            background-color: #222;
         }
 
         /* BUTTONS */
@@ -93,7 +91,7 @@
             display: inline-block;
             border: 1px solid var(--accent-color);
             color: var(--accent-color);
-            padding: 10px 20px;
+            padding: 12px 24px;
             text-decoration: none;
             margin-top: 10px;
             font-family: 'Courier New', monospace;
@@ -118,11 +116,11 @@
         @keyframes typing { from { width: 0 } to { width: 100% } }
         @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--accent-color); } }
 
-        nav { margin-bottom: 50px; }
+        nav { margin-bottom: 70px; }
         nav a {
             color: #888;
             text-decoration: none;
-            margin-right: 20px;
+            margin-right: 25px;
             font-family: 'Courier New', monospace;
             font-size: 0.9em;
         }
@@ -131,13 +129,13 @@
         /* MOBILE ADJUSTMENTS */
         @media (max-width: 768px) {
             .split-container { flex-direction: column-reverse; }
-            .right-pane { height: 500px; width: 100%; }
+            .right-pane { height: 450px; width: 100%; }
             .right-pane::before {
                 width: 100%;
-                height: 30%;
+                height: 40%;
                 background: linear-gradient(to top, var(--bg-color), transparent);
             }
-            .left-pane { width: 100%; padding: 30px; }
+            .left-pane { width: 100%; padding: 40px 25px; }
             .typewriter h1 { white-space: normal; border: none; animation: none; }
         }
     </style>
@@ -153,47 +151,47 @@
             <a href="#contact">03. CONTACT</a>
         </nav>
 
-        <header style="margin-bottom: 60px;">
+        <header style="margin-bottom: 80px;">
             <div class="typewriter">
                 <h1>VICTOR AKANBI</h1>
             </div>
-            <p style="font-size: 1.2em; color: #bbb;">Engineering Electrical BS @ TCU</p>
+            <p style="font-size: 1.3em; color: #bbb;">Engineering Electrical BS Student @ TCU</p>
             <p style="color: var(--accent-color); font-family: 'Courier New'; font-size: 0.9em;">
-                > SYSTEM STATUS: ONLINE
+                > SYSTEM STATUS: ONLINE [2026-01-19]
             </p>
         </header>
 
         <section id="about">
             <h2>01. // THE ENGINEER</h2>
             <p>
-                As an Electrical Engineering student at <strong>Texas Christian University</strong>, 
-                I focus on the intersection of hardware and applied logic. 
-                With a foundation in <strong>Circuit Analysis</strong> and <strong>Applied Programming</strong>, 
-                I bridge the gap between theoretical physics and physical control systems.
+                As an Electrical Engineering student at <strong>Texas Christian University (TCU)</strong>, 
+                I focus on designing efficient, data-driven systems[cite: 3, 7]. 
+                My current coursework in <strong>Circuit Analysis & Design I</strong> and <strong>Differential Equations</strong> 
+                forms the mathematical backbone of my approach to embedded systems and control logic.
             </p>
         </section>
 
-        <section id="projects" style="margin-top: 60px;">
+        <section id="projects" style="margin-top: 80px;">
             <h2>02. // SELECTED PROJECTS</h2>
             <div class="project-card">
-                <h3>Adaptive Ambient Lighting</h3>
-                <p style="font-size: 0.8em; color: #888;">STATUS: COMPLETED | SPRING 2026</p>
+                <h3>Adaptive Ambient Lighting Control</h3>
+                <p style="font-size: 0.8em; color: #888;">STATUS: OPERATIONAL | SPRING 2026</p>
                 <p>
-                    Designed a closed-loop feedback system using Arduino and PWM to regulate LED brightness in real-time.
+                    Developed a closed-loop control system utilizing LDR sensors and PWM-driven LEDs to stabilize luminosity levels.
                 </p>
                 <a href="#" class="btn">INITIALIZE REPORT ></a>
             </div>
         </section>
 
-        <section id="contact" style="margin-top: 60px; margin-bottom: 40px;">
+        <section id="contact" style="margin-top: 80px; margin-bottom: 50px;">
             <h2>03. // TRANSMISSION LINK</h2>
-            <p>Ready for high-impact internships in power systems or embedded design.</p>
+            <p>Seeking high-impact opportunities to apply my background in <strong>Circuit Analysis</strong> and <strong>MATLAB</strong>.</p>
             <a href="mailto:victor.akanbi@tcu.edu" class="btn">EMAIL LINK</a>
             <a href="https://linkedin.com" class="btn">LINKEDIN</a>
         </section>
 
-        <footer style="font-size: 0.8em; color: #666; font-family: 'Courier New';">
-            <p>SYSTEM ARCHITECT: VICTOR IYANUOLUWA AKANBI</p>
+        <footer style="font-size: 0.8em; color: #666; font-family: 'Courier New'; border-top: 1px solid #333; padding-top: 20px;">
+            <p>SYSTEM ARCHITECT: VICTOR IYANUOLUWA AKANBI [ID: 110558240]</p> [cite: 4]
         </footer>
     </div>
 
