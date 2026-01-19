@@ -7,192 +7,158 @@
     <style>
         /* --- THE EE THEME --- */
         :root {
+            --bg-color: #121212;       /* Dark PCB Black */
+            --text-color: #e0e0e0;     /* Solder Silver */
             --accent-color: #00ff41;   /* Oscilloscope Green */
-            --text-color: #f0f0f0;     /* Bright White/Silver */
-            --card-bg: rgba(30, 30, 30, 0.8); /* Semi-transparent cards */
+            --panel-bg: #1a1a1a;       /* Dark Grey Panel */
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        html, body {
             margin: 0;
             padding: 0;
+            height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
             color: var(--text-color);
-            line-height: 1.6;
-            
-            /* --- FULL BACKGROUND IMAGE SETUP --- */
-            /* 1. We stack a dark gradient ON TOP of your image so text is readable */
-            /* 2. Then we load profile.png */
-            background: linear-gradient(
-                rgba(0, 0, 0, 0.85), 
-                rgba(0, 0, 0, 0.95)
-            ), url('profile.png');
-            
-            /* Make it cover the whole screen and stay fixed when scrolling */
-            background-size: cover;
-            background-position: center center;
-            background-attachment: fixed;
-            min-height: 100vh;
         }
 
-        /* Engineering Font for Headers */
+        /* --- THE SPLIT LAYOUT --- */
+        .split-container {
+            display: flex;
+            min-height: 100vh; /* Full height of screen */
+            flex-wrap: wrap;   /* Allows stacking on mobile */
+        }
+
+        /* LEFT SIDE: THE CONTENT (Scrollable) */
+        .left-pane {
+            flex: 1; /* Takes up available space */
+            min-width: 300px; /* Won't get too squished */
+            background-color: var(--bg-color);
+            padding: 50px;
+            box-sizing: border-box;
+            
+            /* --- THE SHADOW TRICK --- */
+            /* This shadow falls to the RIGHT, onto the image */
+            box-shadow: 10px 0 30px rgba(0,0,0, 0.8); 
+            z-index: 2; /* Sits ON TOP of the right pane */
+            position: relative;
+        }
+
+        /* RIGHT SIDE: THE IMAGE */
+        .right-pane {
+            flex: 1; /* Takes up equal space */
+            min-width: 300px;
+            position: relative;
+            z-index: 1;
+            
+            /* IMAGE HANDLING */
+            background-image: url('profile.png');
+            background-size: cover;      /* Ensures no white space */
+            background-position: center top; /* Focus on face first */
+            background-repeat: no-repeat;
+            
+            /* This makes the image stay fixed while you scroll (Parallax) */
+            /* If you want the image to scroll WITH you, delete the line below: */
+            background-attachment: fixed; 
+            min-height: 50vh; /* Height for mobile */
+        }
+
+        /* ENGINEERING TYPOGRAPHY */
         h1, h2, h3 {
             font-family: 'Courier New', Courier, monospace; 
             color: var(--accent-color);
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
         }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-            padding-top: 15vh; /* Push content down so it centers visually */
-        }
-
-        /* --- TYPEWRITER ANIMATION (Big & Bold) --- */
-        .typewriter h1 {
-            font-size: 3rem; /* Make name huge */
-            overflow: hidden; 
-            border-right: .1em solid var(--accent-color); 
-            white-space: nowrap; 
-            margin: 0 auto; 
-            animation: 
-                typing 3.5s steps(30, end),
-                blink-caret .75s step-end infinite;
-        }
-
-        @keyframes typing {
-            from { width: 0 }
-            to { width: 100% }
-        }
-
-        @keyframes blink-caret {
-            from, to { border-color: transparent }
-            50% { border-color: var(--accent-color); }
-        }
-
-        /* Navigation Bar */
-        nav {
-            position: absolute; /* Stick to top right */
-            top: 20px;
-            right: 40px;
-        }
-        nav a {
-            color: var(--text-color);
-            margin-left: 20px;
-            text-decoration: none;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            opacity: 0.8;
-            transition: opacity 0.3s;
-        }
-        nav a:hover {
-            opacity: 1;
-            color: var(--accent-color);
-            text-decoration: underline;
-        }
-
-        /* Glassmorphism Cards */
+        /* CARD STYLES */
         .project-card {
-            background-color: var(--card-bg); /* See-through dark glass */
-            backdrop-filter: blur(5px);       /* Blurs the background image behind the card */
-            border: 1px solid #444;
-            padding: 30px;
+            background-color: var(--panel-bg);
+            border-left: 4px solid var(--accent-color);
+            padding: 20px;
             margin-bottom: 30px;
-            border-radius: 8px;
-            border-left: 5px solid var(--accent-color);
+            border-radius: 4px;
             transition: transform 0.2s ease;
         }
-
         .project-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent-color);
+            transform: translateX(10px); /* Slides right on hover */
+            background-color: #252525;
         }
-        
+
+        /* BUTTONS */
         .btn {
             display: inline-block;
-            background-color: transparent;
             border: 1px solid var(--accent-color);
             color: var(--accent-color);
             padding: 10px 20px;
             text-decoration: none;
-            margin-top: 15px;
+            margin-top: 10px;
             font-family: 'Courier New', monospace;
             font-weight: bold;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
         }
-        
         .btn:hover {
             background-color: var(--accent-color);
             color: #000;
-            box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
         }
 
-        /* Section Spacing */
-        section {
-            margin-bottom: 100px; /* Big gaps between sections for dramatic effect */
+        /* TYPEWRITER EFFECT */
+        .typewriter h1 {
+            overflow: hidden; 
+            border-right: .15em solid var(--accent-color); 
+            white-space: nowrap; 
+            animation: typing 3.5s steps(30, end), blink-caret .75s step-end infinite;
+            display: inline-block;
+            max-width: 100%;
         }
 
-        footer {
-            margin-top: 50px;
-            text-align: center;
-            font-size: 0.8em;
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--accent-color); } }
+
+        /* NAV LINKS */
+        nav { margin-bottom: 50px; }
+        nav a {
             color: #888;
+            text-decoration: none;
+            margin-right: 20px;
             font-family: 'Courier New', monospace;
-            padding-bottom: 20px;
+            font-size: 0.9em;
         }
-        
-        /* Mobile adjustment */
-        @media (max-width: 600px) {
-            .typewriter h1 {
-                font-size: 1.8rem;
-                white-space: normal;
-                border: none;
-                animation: none;
-            }
-            .container {
-                padding-top: 50px;
-            }
-            nav {
-                position: relative;
-                text-align: center;
-                top: 0;
-                right: 0;
-                margin-bottom: 20px;
-            }
+        nav a:hover { color: var(--accent-color); }
+
+        /* MOBILE ADJUSTMENTS */
+        @media (max-width: 768px) {
+            .split-container { flex-direction: column-reverse; /* Image on Top */ }
+            .right-pane { height: 400px; min-height: 400px; width: 100%; }
+            .left-pane { width: 100%; box-shadow: none; }
+            .typewriter h1 { white-space: normal; border: none; animation: none; }
         }
     </style>
 </head>
 <body>
 
-    <nav>
-        <a href="#about">01. ABOUT</a>
-        <a href="#projects">02. PROJECTS</a>
-        <a href="#contact">03. CONTACT</a>
-    </nav>
+<div class="split-container">
+    
+    <div class="left-pane">
+        <nav>
+            <a href="#about">01. ABOUT</a>
+            <a href="#projects">02. PROJECTS</a>
+            <a href="#contact">03. CONTACT</a>
+        </nav>
 
-<div class="container">
+        <header style="margin-bottom: 60px;">
+            <div class="typewriter">
+                <h1>VICTOR AKANBI</h1>
+            </div>
+            <p style="font-size: 1.2em; color: #bbb;">Electrical Engineering Student @ TCU</p>
+            <p style="color: var(--accent-color); font-family: 'Courier New'; font-size: 0.9em;">
+                > SYSTEM STATUS: ONLINE
+            </p>
+        </header>
 
-    <header style="text-align: center; margin-bottom: 120px;">
-        <div class="typewriter">
-            <h1>VICTOR AKANBI</h1>
-        </div>
-        <p style="font-size: 1.5em; color: #ccc; margin-top: 10px;">
-            Electrical Engineering Student @ TCU
-        </p>
-        <p style="color: var(--accent-color); font-family: 'Courier New', monospace;">
-            > SYSTEM STATUS: ONLINE
-        </p>
-    </header>
-
-    <section id="about">
-        <h2>01. // THE ENGINEER</h2>
-        <div class="project-card">
-            <p style="font-size: 1.1em;">
+        <section id="about">
+            <h2>01. // THE ENGINEER</h2>
+            <p>
                 I’ve always been the person who takes things apart to see how they work. 
                 Now, I’m learning how to put them back together—smarter, faster, and more efficient.
             </p>
@@ -201,46 +167,45 @@
                 My passion lies in the intersection of hardware and code—taking mathematical concepts from <em>Differential Equations</em> 
                 and turning them into physical, moving systems.
             </p>
+        </section>
+
+        <section id="projects" style="margin-top: 60px;">
+            <h2>02. // SELECTED PROJECTS</h2>
+
+            <div class="project-card">
+                <h3>Adaptive Ambient Lighting</h3>
+                <p style="font-size: 0.8em; color: #888;">STATUS: COMPLETED | WINTER 2026</p>
+                <p>
+                    Designed a closed-loop feedback system that autonomously adjusts LED brightness based on environmental light. 
+                    Implemented a custom hysteresis algorithm to eliminate signal noise.
+                </p>
+                <a href="#" class="btn">INITIALIZE REPORT ></a>
+            </div>
+
+            <div class="project-card">
+                <h3>PCB Power Regulation</h3>
+                <p style="font-size: 0.8em; color: #888;">STATUS: IN PROGRESS</p>
+                <p>
+                    Designing a custom PCB layout to regulate 9V battery input to stable 5V/3.3V logic levels for microcontroller applications.
+                </p>
+            </div>
+        </section>
+
+        <section id="contact" style="margin-top: 60px; margin-bottom: 40px;">
+            <h2>03. // TRANSMISSION LINK</h2>
+            <p>I am open to internships and collaborative projects.</p>
+            <a href="mailto:your.email@tcu.edu" class="btn">EMAIL LINK</a>
+            <a href="https://linkedin.com" class="btn">LINKEDIN</a>
+        </section>
+
+        <footer style="font-size: 0.8em; color: #666; font-family: 'Courier New';">
+            <p>SYSTEM ARCHITECT: VICTOR AKANBI</p>
+        </footer>
+    </div>
+
+    <div class="right-pane">
         </div>
-    </section>
 
-    <section id="projects">
-        <h2>02. // SELECTED PROJECTS</h2>
-
-        <div class="project-card">
-            <h3>Adaptive Ambient Lighting System</h3>
-            <p style="color: #aaa; font-family: 'Courier New'; font-size: 0.9em;">STATUS: COMPLETED | WINTER 2026</p>
-            <p><strong>Tech Stack:</strong> Arduino (C++), Voltage Dividers, PWM Signal Processing</p>
-            <p>
-                Designed a closed-loop feedback system that autonomously adjusts LED brightness based on environmental light. 
-                Implemented a custom hysteresis algorithm to eliminate signal noise and prevent flickering at threshold levels.
-            </p>
-            <a href="#" class="btn">INITIALIZE REPORT ></a>
-        </div>
-
-        <div class="project-card">
-            <h3>PCB Power Regulation Design</h3>
-            <p style="color: #aaa; font-family: 'Courier New'; font-size: 0.9em;">STATUS: IN PROGRESS</p>
-            <p><strong>Tech Stack:</strong> Altium Designer / KiCad</p>
-            <p>Currently designing a custom PCB layout to regulate 9V battery input to stable 5V/3.3V logic levels.</p>
-        </div>
-    </section>
-
-    <section id="contact">
-        <h2>03. // TRANSMISSION LINK</h2>
-        <div style="text-align: center;">
-            <p style="font-size: 1.2em;">I am currently open to internships and collaborative projects.</p>
-            <p>
-                <a href="mailto:your.email@tcu.edu" class="btn">EMAIL LINK</a>
-                <a href="https://linkedin.com" class="btn">LINKEDIN</a>
-                <a href="https://github.com" class="btn">GITHUB</a>
-            </p>
-        </div>
-    </section>
-
-    <footer>
-        <p>SYSTEM ARCHITECT: VICTOR AKANBI</p>
-    </footer>
 </div>
 
 </body>
