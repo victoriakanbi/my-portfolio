@@ -1,90 +1,155 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My Engineering Portfolio</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Victor Akanbi | Electrical Engineer</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f4f4; text-align: center; padding: 50px; }
-        h1 { color: #333; margin-bottom: 40px; }
-        
-        /* The Grid: Holds your projects side-by-side */
-        .project-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
+        /* --- THE EE THEME --- */
+        :root {
+            --bg-color: #121212;       /* Dark PCB Black */
+            --text-color: #e0e0e0;     /* Solder Silver */
+            --accent-color: #00ff41;   /* Oscilloscope Green */
+            --card-bg: #1e1e1e;        /* Dark Grey Component */
         }
 
-        /* The Card: The box for each project */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Engineering Font for Headers */
+        h1, h2, h3 {
+            font-family: 'Courier New', Courier, monospace; 
+            color: var(--accent-color);
+            border-bottom: 1px solid var(--accent-color);
+            padding-bottom: 10px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Navigation Bar */
+        nav {
+            margin-bottom: 40px;
+            text-align: right;
+        }
+        nav a {
+            color: var(--text-color);
+            margin-left: 20px;
+            text-decoration: none;
+            font-family: 'Courier New', monospace;
+        }
+        nav a:hover {
+            color: var(--accent-color);
+            text-decoration: underline;
+        }
+
+        /* Project Card Styling */
         .project-card {
-            background: white;
-            width: 300px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            overflow: hidden;
-            transition: transform 0.3s;
+            background-color: var(--card-bg);
+            border: 1px solid #333;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border-left: 5px solid var(--accent-color); /* The "Resistor Band" look */
         }
         
-        .project-card:hover { transform: translateY(-5px); }
-
-        /* The Image */
-        .project-image {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            background-color: #ddd; /* Gray placeholder if image fails */
-        }
-
-        /* The Text */
-        .project-info { padding: 20px; text-align: left; }
-        h3 { margin-top: 0; color: #2c3e50; }
-        p { color: #666; font-size: 14px; line-height: 1.5; }
-
-        /* The Button */
         .btn {
             display: inline-block;
-            margin-top: 10px;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
+            background-color: transparent;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 8px 16px;
             text-decoration: none;
-            border-radius: 5px;
+            margin-top: 10px;
+            font-family: 'Courier New', monospace;
             font-weight: bold;
         }
-        .btn:hover { background-color: #0056b3; }
+        .btn:hover {
+            background-color: var(--accent-color);
+            color: #000;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 0.8em;
+            color: #666;
+            font-family: 'Courier New', monospace;
+        }
     </style>
 </head>
 <body>
 
-    <h1>Engineering Portfolio</h1>
+<div class="container">
+    <nav>
+        <a href="#about">01. About</a>
+        <a href="#projects">02. Projects</a>
+        <a href="#contact">03. Contact</a>
+    </nav>
 
-    <div class="project-grid">
+    <header>
+        <h1>Victor Akanbi.</h1>
+        <p style="font-size: 1.2em;">Electrical Engineering Student @ TCU | Exploring Control Systems & Analog Design</p>
+    </header>
+
+    <section id="about">
+        <h2>01. About Me</h2>
+        <p>
+            Hi, I’m Victor. I’ve always been the person who takes things apart to see how they work. 
+            Now, as an Electrical Engineering undergraduate, I’m learning how to put them back together better than they were before.
+        </p>
+        <p>
+            Currently, I am diving deep into <strong>Circuit Analysis</strong> and <strong>Applied Programming</strong>. 
+            My passion lies in the intersection of hardware and code—taking mathematical concepts from <em>Differential Equations</em> 
+            and turning them into physical, moving systems.
+        </p>
+        <p>
+            <em>Fun fact: When I'm not debugging circuits, I'm usually [Insert Hobby Here].</em>
+        </p>
+    </section>
+
+    <section id="projects">
+        <h2>02. Selected Projects</h2>
 
         <div class="project-card">
-            <img src="battery_project.jpg" class="project-image" alt="Battery Project">
-            <div class="project-info">
-                <h3>Battery Life Estimator</h3>
-                <p>
-                    A real-time State-of-Charge predictor for 9V batteries. 
-                    Designed a voltage divider PCB and implemented a polynomial 
-                    regression algorithm in MATLAB to predict failure time.
-                </p>
-                <a href="https://github.com/YOUR_USERNAME/Battery-SoC-Estimator" class="btn">View on GitHub</a>
-            </div>
+            <h3>Adaptive Ambient Lighting System</h3>
+            <p><strong>Tech Stack:</strong> Arduino (C++), Voltage Dividers, PWM Signal Processing</p>
+            <p>
+                Designed a closed-loop feedback system that autonomously adjusts LED brightness based on environmental light. 
+                Implemented a custom hysteresis algorithm to eliminate signal noise and prevent flickering at threshold levels.
+            </p>
+            <a href="#" class="btn">View Engineering Report ></a>
         </div>
 
         <div class="project-card">
-            <img src="https://via.placeholder.com/300" class="project-image" alt="Project 2">
-            <div class="project-info">
-                <h3>Future Project</h3>
-                <p>
-                    Description of your next great project will go here. 
-                    This shows recruiters you are active and learning.
-                </p>
-                <a href="#" class="btn">Coming Soon</a>
-            </div>
+            <h3>Coming Soon: PCB Design</h3>
+            <p><strong>Tech Stack:</strong> Altium / KiCad</p>
+            <p>Currently working on a custom PCB layout for a power regulation circuit.</p>
         </div>
+    </section>
 
-    </div>
+    <section id="contact">
+        <h2>03. Connect</h2>
+        <p>I am currently open to internships and collaborative projects.</p>
+        <p>
+            <a href="mailto:your.email@tcu.edu" class="btn">Email Me</a>
+            <a href="https://linkedin.com/in/yourprofile" class="btn">LinkedIn</a>
+        </p>
+    </section>
+
+    <footer>
+        <p>Designed by Victor Akanbi | Built with HTML & CSS</p>
+    </footer>
+</div>
 
 </body>
 </html>
