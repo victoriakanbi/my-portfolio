@@ -4,18 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Victor Iyanuoluwa Akanbi | Electrical Engineer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         /* --- THE ORIGINAL PCB BLACK THEME --- */
         :root {
             --bg-color: #121212;
             --text-color: #e0e0e0;
             --accent-color: #00ff41;
+            --font-main: 'Space Mono', monospace;
+            --font-header: 'Share Tech Mono', monospace;
         }
 
         html, body {
             margin: 0; padding: 0; height: 100%;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: var(--font-main);
             background-color: var(--bg-color); color: var(--text-color);
+            font-size: 18px; /* Increased base font size */
         }
 
         .split-container { display: flex; min-height: 100vh; flex-wrap: wrap; }
@@ -23,7 +27,7 @@
         /* LEFT SIDE: WIDE CONTENT AREA */
         .left-pane {
             flex: 2.2; min-width: 450px; background-color: var(--bg-color);
-            padding: 60px; box-sizing: border-box; z-index: 3; position: relative;
+            padding: 80px 60px; box-sizing: border-box; z-index: 3; position: relative;
         }
 
         /* RIGHT SIDE: PROFILE IMAGE */
@@ -44,14 +48,11 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 40px;
-            margin-bottom: 100px;
+            gap: 50px;
+            margin-bottom: 120px;
         }
 
-        /* This flips the layout for every SECOND section */
-        .content-section:nth-of-type(even) {
-            flex-direction: row-reverse;
-        }
+        .content-section:nth-of-type(even) { flex-direction: row-reverse; }
 
         .section-text { flex: 2; text-align: left; }
         .content-section:nth-of-type(even) .section-text { text-align: right; }
@@ -60,27 +61,33 @@
             flex: 1;
             display: flex;
             justify-content: center;
-            opacity: 0.6;
-            filter: drop-shadow(0 0 5px var(--accent-color));
+            opacity: 0.8;
+            filter: drop-shadow(0 0 8px var(--accent-color));
         }
 
-        /* ENGINEERING TYPOGRAPHY */
-        h1, h2, h3 { font-family: 'Courier New', Courier, monospace; color: var(--accent-color); text-transform: uppercase; }
+        /* TYPOGRAPHY OVERHAUL */
+        h1 { font-family: var(--font-header); font-size: 3.5rem; color: var(--accent-color); margin: 0; }
+        h2 { font-family: var(--font-header); font-size: 2rem; color: var(--accent-color); text-transform: uppercase; margin-bottom: 20px; }
+        h3 { font-family: var(--font-header); font-size: 1.5rem; color: var(--accent-color); margin-bottom: 10px; }
+        
+        p { line-height: 1.8; margin-bottom: 1.5rem; }
 
         .project-card {
-            border-left: 3px solid var(--accent-color);
-            padding: 10px 0 10px 25px; margin-bottom: 20px;
+            border-left: 5px solid var(--accent-color);
+            padding: 15px 0 15px 30px; margin-bottom: 30px;
         }
         .content-section:nth-of-type(even) .project-card {
-            border-left: none; border-right: 3px solid var(--accent-color);
-            padding: 10px 25px 10px 0;
+            border-left: none; border-right: 5px solid var(--accent-color);
+            padding: 15px 30px 15px 0;
         }
 
         .btn {
-            display: inline-block; border: 1px solid var(--accent-color); color: var(--accent-color);
-            padding: 10px 20px; text-decoration: none; margin-top: 15px;
-            font-family: 'Courier New', monospace; font-weight: bold;
+            display: inline-block; border: 2px solid var(--accent-color); color: var(--accent-color);
+            padding: 12px 28px; text-decoration: none; margin-top: 20px;
+            font-family: var(--font-header); font-weight: bold; font-size: 1.1rem;
+            transition: all 0.3s;
         }
+        .btn:hover { background-color: var(--accent-color); color: #000; box-shadow: 0 0 20px var(--accent-color); }
 
         .typewriter h1 {
             overflow: hidden; border-right: .15em solid var(--accent-color); white-space: nowrap; 
@@ -91,15 +98,17 @@
         @keyframes typing { from { width: 0 } to { width: 100% } }
         @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--accent-color); } }
 
-        nav { margin-bottom: 70px; text-align: center; }
-        nav a { color: rgba(255, 255, 255, 0.5); text-decoration: none; margin: 0 20px; font-family: 'Courier New', monospace; }
-        nav a:hover { color: var(--accent-color); }
+        nav { margin-bottom: 80px; text-align: center; }
+        nav a { color: rgba(255, 255, 255, 0.5); text-decoration: none; margin: 0 25px; font-family: var(--font-header); font-size: 1.1rem; }
+        nav a:hover { color: var(--accent-color); border-bottom: 2px solid var(--accent-color); }
 
-        footer { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; font-size: 0.8em; color: #666; font-family: 'Courier New'; }
+        footer { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; margin-top: 50px; font-size: 0.9rem; color: #666; font-family: var(--font-header); }
 
         @media (max-width: 768px) {
+            html { font-size: 16px; }
             .content-section, .content-section:nth-of-type(even) { flex-direction: column; text-align: center; }
-            .section-symbol { order: -1; margin-bottom: 20px; }
+            .section-symbol { order: -1; margin-bottom: 30px; }
+            h1 { font-size: 2.5rem; }
         }
     </style>
 </head>
@@ -108,24 +117,24 @@
 <div class="split-container">
     <div class="left-pane">
         <nav>
-            <a href="#about">01. ABOUT</a>
-            <a href="#projects">02. PROJECTS</a>
-            <a href="#contact">03. CONTACT</a>
+            <a href="#about">01_ABOUT</a>
+            <a href="#projects">02_PROJECTS</a>
+            <a href="#contact">03_CONTACT</a>
         </nav>
 
-        <header style="margin-bottom: 100px;">
+        <header style="margin-bottom: 120px;">
             <div class="typewriter"><h1>VICTOR AKANBI</h1></div>
-            <p style="font-size: 1.3em; color: rgba(255,255,255,0.7);">Engineering Electrical BS Student @ TCU</p> 
-            <p style="color: var(--accent-color); font-family: 'Courier New'; font-size: 0.9em;">> SYSTEM STATUS: ONLINE [2026-01-19]</p> [cite: 1, 5]
+            <p style="font-size: 1.5rem; color: rgba(255,255,255,0.8);">Electrical Engineering @ TCU</p>
+            <p style="color: var(--accent-color); font-family: var(--font-header); font-size: 1rem;">> STATUS: OPTIMIZED_LINK [2026-01-19]</p>
         </header>
 
         <div class="content-section" id="about">
             <div class="section-text">
-                <h2>01. // THE ENGINEER</h2>
-                <p>As an Electrical Engineering student at <strong>Texas Christian University (TCU)</strong>, I focus on designing efficient, data-driven systems[cite: 3, 7]. My academic background includes **Circuit Analysis**, **Applied Programming-Matlab**, and **Differential Equations**.</p>
+                <h2>01_THE_ENGINEER</h2>
+                <p>As an Electrical Engineering student at **Texas Christian University (TCU)**, I focus on designing efficient, data-driven systems. My academic foundation is built on **Circuit Analysis**, **MATLAB Programming**, and **Differential Equations**.</p>
             </div>
             <div class="section-symbol">
-                <svg width="100" height="60" viewBox="0 0 100 60" stroke="#00ff41" stroke-width="2" fill="none">
+                <svg width="120" height="80" viewBox="0 0 100 60" stroke="#00ff41" stroke-width="3" fill="none">
                     <path d="M0,30 L20,30 L25,10 L35,50 L45,10 L55,50 L65,10 L75,50 L80,30 L100,30" />
                 </svg>
             </div>
@@ -133,16 +142,16 @@
 
         <div class="content-section" id="projects">
             <div class="section-text">
-                <h2>02. // SELECTED PROJECTS</h2>
+                <h2>02_SELECTED_PROJECTS</h2>
                 <div class="project-card">
-                    <h3>Adaptive Ambient Lighting Control</h3>
-                    <p style="font-size: 0.8em; color: #888;">STATUS: OPERATIONAL | SPRING 2026</p> [cite: 5]
-                    <p>A closed-loop system using LDR sensors and PWM-driven LEDs to stabilize luminosity[cite: 2].</p>
-                    <a href="#" class="btn">INITIALIZE REPORT ></a>
+                    <h3>ADAPTIVE_LIGHT_CONTROL</h3>
+                    <p style="font-size: 0.9rem; color: #888;">STATUS: OPERATIONAL | SPRING 2026</p>
+                    <p>Designed a closed-loop control system utilizing LDR sensors and PWM-modulated LEDs to maintain constant luminosity levels.</p>
+                    <a href="#" class="btn">RUN_REPORT.EXE ></a>
                 </div>
             </div>
             <div class="section-symbol">
-                <svg width="100" height="60" viewBox="0 0 100 60" stroke="#00ff41" stroke-width="2" fill="none">
+                <svg width="120" height="80" viewBox="0 0 100 60" stroke="#00ff41" stroke-width="3" fill="none">
                     <path d="M0,30 L45,30 M55,30 L100,30 M45,10 L45,50 M55,10 L55,50" />
                 </svg>
             </div>
@@ -150,20 +159,20 @@
 
         <div class="content-section" id="contact">
             <div class="section-text">
-                <h2>03. // TRANSMISSION LINK</h2>
-                <p>Seeking opportunities to apply my background in <strong>Circuit Analysis</strong>.</p>
-                <a href="mailto:victor.akanbi@tcu.edu" class="btn">EMAIL LINK</a>
-                <a href="https://linkedin.com" class="btn">LINKEDIN</a>
+                <h2>03_TRANSMISSION_LINK</h2>
+                <p>Seeking high-impact roles to apply my expertise in **Circuit Analysis** and **MATLAB**.</p>
+                <a href="mailto:victor.akanbi@tcu.edu" class="btn">SEND_MAIL</a>
+                <a href="https://linkedin.com" class="btn">LINKEDIN_CONNECT</a>
             </div>
             <div class="section-symbol">
-                <svg width="100" height="60" viewBox="0 0 100 60" stroke="#00ff41" stroke-width="2" fill="none">
+                <svg width="120" height="80" viewBox="0 0 100 60" stroke="#00ff41" stroke-width="3" fill="none">
                     <path d="M50,0 L50,40 M20,40 L80,40 M35,50 L65,50 M45,60 L55,60" />
                 </svg>
             </div>
         </div>
 
         <footer>
-            <p>SYSTEM ARCHITECT: VICTOR IYANUOLUWA AKANBI [ID: 110558240]</p> 
+            <p>ID_ARCHITECT: VICTOR_I_AKANBI [ID: 110558240]</p>
         </footer>
     </div>
     <div class="right-pane"></div>
