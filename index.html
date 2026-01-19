@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Victor Iyanuoluwa Akanbi | Electrical Engineer</title>
     <style>
-        /* --- THE PROFESSIONAL SUIT BLUE THEME --- */
+        /* --- THE ORIGINAL PCB BLACK THEME --- */
         :root {
-            --bg-color: #0A192F;       /* Deep Suit Navy Blue */
+            --bg-color: #121212;       /* Dark PCB Black */
             --text-color: #e0e0e0;     /* Solder Silver */
             --accent-color: #00ff41;   /* Oscilloscope Green */
         }
@@ -30,7 +30,7 @@
 
         /* LEFT SIDE: WIDE CONTENT AREA */
         .left-pane {
-            flex: 2.2; /* Maximum room for technical text */
+            flex: 2.2; 
             min-width: 450px;
             background-color: var(--bg-color);
             padding: 60px;
@@ -42,7 +42,7 @@
 
         /* RIGHT SIDE: PROFILE IMAGE */
         .right-pane {
-            flex: 0.8; /* Narrow profile focus */
+            flex: 0.8; 
             min-width: 300px;
             position: relative;
             background-image: url('profile.png');
@@ -52,7 +52,7 @@
             z-index: 1;
         }
 
-        /* --- SEAMLESS HIGH-DENSITY GRADIENT --- */
+        /* --- SEAMLESS GRADIENT (Black to Transparent) --- */
         .right-pane::before {
             content: '';
             position: absolute;
@@ -60,12 +60,11 @@
             left: 0;
             width: 100%; 
             height: 100%;
-            /* Sophisticated blend from solid blue to transparent */
             background: linear-gradient(to right, 
                 var(--bg-color) 0%, 
                 var(--bg-color) 15%, 
-                rgba(10, 25, 47, 0.7) 40%, 
-                rgba(10, 25, 47, 0) 90%);
+                rgba(18, 18, 18, 0.7) 40%, 
+                rgba(18, 18, 18, 0) 90%);
             z-index: 2;
         }
 
@@ -77,11 +76,11 @@
             letter-spacing: 1px;
         }
 
-        /* NO-PANEL PROJECT STYLES */
+        /* MINIMALIST PROJECT STYLES */
         .project-card {
-            background-color: transparent; /* PANEL REMOVED */
+            background-color: transparent; 
             border-left: 3px solid var(--accent-color);
-            padding: 10px 0 10px 25px; /* Spacing shifted to favor text */
+            padding: 10px 0 10px 25px; 
             margin-bottom: 45px;
             transition: transform 0.3s ease;
         }
@@ -164,7 +163,7 @@
             <div class="typewriter">
                 <h1>VICTOR AKANBI</h1>
             </div>
-            <p style="font-size: 1.3em; color: rgba(255,255,255,0.7);">Engineering Electrical BS Student @ TCU</p>
+            <p style="font-size: 1.3em; color: rgba(255,255,255,0.7);">Engineering Electrical BS Student @ TCU</p> 
             <p style="color: var(--accent-color); font-family: 'Courier New'; font-size: 0.9em;">
                 > SYSTEM STATUS: ONLINE [2026-01-19]
             </p>
@@ -174,9 +173,9 @@
             <h2>01. // THE ENGINEER</h2>
             <p>
                 As an Electrical Engineering student at <strong>Texas Christian University (TCU)</strong>[cite: 3], 
-                I focus on designing efficient, data-driven systems[cite: 7]. 
-                My current coursework in <strong>Circuit Analysis & Design I</strong> and <strong>Differential Equations</strong>  
-                forms the mathematical backbone of my approach to embedded systems and control logic.
+                I focus on designing efficient, data-driven systems. 
+                My current coursework in <strong>Circuit Analysis & Design I</strong> and <strong>Differential Equations</strong> 
+                forms the mathematical backbone of my approach to embedded systems and control logic[cite: 2, 7].
             </p>
         </section>
 
@@ -184,7 +183,7 @@
             <h2>02. // SELECTED PROJECTS</h2>
             <div class="project-card">
                 <h3>Adaptive Ambient Lighting Control</h3>
-                <p style="font-size: 0.8em; color: #888;">STATUS: OPERATIONAL | SPRING 2026 [cite: 5]</p>
+                <p style="font-size: 0.8em; color: #888;">STATUS: OPERATIONAL | SPRING 2026</p> [cite: 5]
                 <p>
                     Developed a closed-loop control system utilizing LDR sensors and PWM-driven LEDs to stabilize luminosity levels.
                 </p>
