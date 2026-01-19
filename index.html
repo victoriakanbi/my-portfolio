@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Victor Akanbi | Electrical Engineer</title>
+    <title>Victor Iyanuoluwa Akanbi | Electrical Engineer</title>
     <style>
         /* --- THE EE THEME --- */
         :root {
@@ -25,42 +25,45 @@
         /* --- THE SPLIT LAYOUT --- */
         .split-container {
             display: flex;
-            min-height: 100vh; /* Full height of screen */
-            flex-wrap: wrap;   /* Allows stacking on mobile */
+            min-height: 100vh;
+            flex-wrap: wrap;
         }
 
-        /* LEFT SIDE: THE CONTENT (Scrollable) */
+        /* LEFT SIDE: THE CONTENT */
         .left-pane {
-            flex: 1; /* Takes up available space */
-            min-width: 300px; /* Won't get too squished */
+            flex: 1;
+            min-width: 350px;
             background-color: var(--bg-color);
             padding: 50px;
             box-sizing: border-box;
-            
-            /* --- THE SHADOW TRICK --- */
-            /* This shadow falls to the RIGHT, onto the image */
-            box-shadow: 10px 0 30px rgba(0,0,0, 0.8); 
-            z-index: 2; /* Sits ON TOP of the right pane */
+            z-index: 3; /* Stays above the fade */
             position: relative;
         }
 
-        /* RIGHT SIDE: THE IMAGE */
+        /* RIGHT SIDE: THE IMAGE + GRADIENT FADE */
         .right-pane {
-            flex: 1; /* Takes up equal space */
-            min-width: 300px;
+            flex: 1.2; /* Slightly wider for the portrait */
+            min-width: 350px;
             position: relative;
-            z-index: 1;
-            
-            /* IMAGE HANDLING */
             background-image: url('profile.png');
-            background-size: cover;      /* Ensures no white space */
-            background-position: center top; /* Focus on face first */
+            background-size: cover;
+            background-position: center top;
             background-repeat: no-repeat;
-            
-            /* This makes the image stay fixed while you scroll (Parallax) */
-            /* If you want the image to scroll WITH you, delete the line below: */
-            background-attachment: fixed; 
-            min-height: 50vh; /* Height for mobile */
+            /* background-attachment: fixed; REMOVED to allow normal scrolling */
+            z-index: 1;
+        }
+
+        /* --- THE SEAMLESS FADE EFFECT --- */
+        .right-pane::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 40%; /* Adjust this to control how far the fade goes into the image */
+            height: 100%;
+            /* Fades from the background black to total transparency */
+            background: linear-gradient(to right, var(--bg-color), transparent);
+            z-index: 2;
         }
 
         /* ENGINEERING TYPOGRAPHY */
@@ -81,7 +84,7 @@
             transition: transform 0.2s ease;
         }
         .project-card:hover {
-            transform: translateX(10px); /* Slides right on hover */
+            transform: translateX(10px);
             background-color: #252525;
         }
 
@@ -115,7 +118,6 @@
         @keyframes typing { from { width: 0 } to { width: 100% } }
         @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--accent-color); } }
 
-        /* NAV LINKS */
         nav { margin-bottom: 50px; }
         nav a {
             color: #888;
@@ -128,9 +130,14 @@
 
         /* MOBILE ADJUSTMENTS */
         @media (max-width: 768px) {
-            .split-container { flex-direction: column-reverse; /* Image on Top */ }
-            .right-pane { height: 400px; min-height: 400px; width: 100%; }
-            .left-pane { width: 100%; box-shadow: none; }
+            .split-container { flex-direction: column-reverse; }
+            .right-pane { height: 500px; width: 100%; }
+            .right-pane::before {
+                width: 100%;
+                height: 30%;
+                background: linear-gradient(to top, var(--bg-color), transparent);
+            }
+            .left-pane { width: 100%; padding: 30px; }
             .typewriter h1 { white-space: normal; border: none; animation: none; }
         }
     </style>
@@ -150,7 +157,7 @@
             <div class="typewriter">
                 <h1>VICTOR AKANBI</h1>
             </div>
-            <p style="font-size: 1.2em; color: #bbb;">Electrical Engineering Student @ TCU</p>
+            <p style="font-size: 1.2em; color: #bbb;">Engineering Electrical BS @ TCU</p>
             <p style="color: var(--accent-color); font-family: 'Courier New'; font-size: 0.9em;">
                 > SYSTEM STATUS: ONLINE
             </p>
@@ -159,52 +166,38 @@
         <section id="about">
             <h2>01. // THE ENGINEER</h2>
             <p>
-                I’ve always been the person who takes things apart to see how they work. 
-                Now, I’m learning how to put them back together—smarter, faster, and more efficient.
-            </p>
-            <p>
-                Currently, I am diving deep into <strong>Circuit Analysis</strong> and <strong>Applied Programming</strong>. 
-                My passion lies in the intersection of hardware and code—taking mathematical concepts from <em>Differential Equations</em> 
-                and turning them into physical, moving systems.
+                As an Electrical Engineering student at <strong>Texas Christian University</strong>, 
+                I focus on the intersection of hardware and applied logic. 
+                With a foundation in <strong>Circuit Analysis</strong> and <strong>Applied Programming</strong>, 
+                I bridge the gap between theoretical physics and physical control systems.
             </p>
         </section>
 
         <section id="projects" style="margin-top: 60px;">
             <h2>02. // SELECTED PROJECTS</h2>
-
             <div class="project-card">
                 <h3>Adaptive Ambient Lighting</h3>
-                <p style="font-size: 0.8em; color: #888;">STATUS: COMPLETED | WINTER 2026</p>
+                <p style="font-size: 0.8em; color: #888;">STATUS: COMPLETED | SPRING 2026</p>
                 <p>
-                    Designed a closed-loop feedback system that autonomously adjusts LED brightness based on environmental light. 
-                    Implemented a custom hysteresis algorithm to eliminate signal noise.
+                    Designed a closed-loop feedback system using Arduino and PWM to regulate LED brightness in real-time.
                 </p>
                 <a href="#" class="btn">INITIALIZE REPORT ></a>
-            </div>
-
-            <div class="project-card">
-                <h3>PCB Power Regulation</h3>
-                <p style="font-size: 0.8em; color: #888;">STATUS: IN PROGRESS</p>
-                <p>
-                    Designing a custom PCB layout to regulate 9V battery input to stable 5V/3.3V logic levels for microcontroller applications.
-                </p>
             </div>
         </section>
 
         <section id="contact" style="margin-top: 60px; margin-bottom: 40px;">
             <h2>03. // TRANSMISSION LINK</h2>
-            <p>I am open to internships and collaborative projects.</p>
-            <a href="mailto:your.email@tcu.edu" class="btn">EMAIL LINK</a>
+            <p>Ready for high-impact internships in power systems or embedded design.</p>
+            <a href="mailto:victor.akanbi@tcu.edu" class="btn">EMAIL LINK</a>
             <a href="https://linkedin.com" class="btn">LINKEDIN</a>
         </section>
 
         <footer style="font-size: 0.8em; color: #666; font-family: 'Courier New';">
-            <p>SYSTEM ARCHITECT: VICTOR AKANBI</p>
+            <p>SYSTEM ARCHITECT: VICTOR IYANUOLUWA AKANBI</p>
         </footer>
     </div>
 
-    <div class="right-pane">
-        </div>
+    <div class="right-pane"></div>
 
 </div>
 
