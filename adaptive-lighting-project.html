@@ -27,14 +27,14 @@
 
         .container { 
             max-width: 1000px; 
-            margin: 40px auto; 
+            margin: 20px auto; /* Reduced margin for better fit */
             background: rgba(0,0,0,0.9); 
-            padding: 50px; 
+            padding: 5%; /* Fluid padding */
             border: 1px solid var(--accent-color); 
             box-shadow: 0 0 20px rgba(0, 255, 65, 0.1); 
+            box-sizing: border-box; /* Ensures padding doesn't affect width */
         }
         
-        /* New Top Image Styling */
         .hero-image-container {
             width: 100%;
             border: 1px solid var(--accent-color);
@@ -47,19 +47,27 @@
             width: 100%;
             height: auto;
             display: block;
+            object-fit: cover;
         }
 
         header { border-bottom: 2px solid var(--accent-color); margin-bottom: 40px; padding-bottom: 20px; }
         .back-link { text-decoration: none; color: var(--accent-color); font-weight: bold; font-size: 0.8rem; letter-spacing: 1px; }
 
-        h1 { color: var(--accent-color); font-size: 2.5rem; margin-top: 10px; }
-        h2 { color: var(--accent-color); font-size: 1.4rem; border-bottom: 1px solid var(--dim-accent); padding-bottom: 5px; margin-top: 40px; }
+        h1 { color: var(--accent-color); font-size: clamp(1.5rem, 5vw, 2.5rem); margin-top: 10px; line-height: 1.2; }
+        h2 { color: var(--accent-color); font-size: clamp(1.1rem, 3vw, 1.4rem); border-bottom: 1px solid var(--dim-accent); padding-bottom: 5px; margin-top: 40px; }
         
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.9rem; }
+        /* Table Responsiveness */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin: 20px 0;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 500px; }
         th { background: var(--dim-accent); color: var(--accent-color); text-align: left; padding: 12px; border: 1px solid var(--dim-accent); }
         td { padding: 12px; border: 1px solid var(--dim-accent); vertical-align: top; }
 
-        /* List Styling for Challenges & Applications */
         ul { list-style: none; padding-left: 0; }
         ul li { position: relative; padding-left: 30px; margin-bottom: 15px; }
         ul li::before { content: ">"; position: absolute; left: 0; color: var(--accent-color); font-weight: bold; }
@@ -79,7 +87,7 @@
             display: block;
         }
 
-        .code-block { background: #050505; border-left: 3px solid var(--accent-color); padding: 20px; color: var(--accent-color); overflow-x: auto; margin: 20px 0; }
+        .code-block { background: #050505; border-left: 3px solid var(--accent-color); padding: 15px; color: var(--accent-color); overflow-x: auto; margin: 20px 0; font-size: 0.85rem; }
         
         .equation-box {
             text-align: center;
@@ -90,6 +98,21 @@
         }
 
         footer { border-top: 1px solid var(--dim-accent); padding: 40px 0; font-size: 0.7rem; color: #555; }
+
+        /* Mobile Specific Tweaks */
+        @media (max-width: 600px) {
+            .container {
+                margin: 0;
+                border: none;
+                padding: 20px;
+            }
+            .hero-image-container {
+                margin: -20px -20px 20px -20px; /* Full bleed on mobile */
+                width: calc(100% + 40px);
+                border: none;
+                border-bottom: 1px solid var(--accent-color);
+            }
+        }
     </style>
 </head>
 <body>
@@ -113,37 +136,39 @@
 
     <section id="specs">
         <h2>02 // Component Specifications</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Component</th>
-                    <th>Function in System</th>
-                    <th>Technical Note</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><strong>ATmega328P (Arduino)</strong></td>
-                    <td>Central Processing Unit</td>
-                    <td>The brain.</td>
-                </tr>
-                <tr>
-                    <td><strong>LDR (Photoresistor)</strong></td>
-                    <td>Light Sensor</td>
-                    <td>Variable resistance that decreases as light increases.</td>
-                </tr>
-                <tr>
-                    <td><strong>10kΩ Resistor</strong></td>
-                    <td>Voltage Divider</td>
-                    <td>Constructs a readable 0-5V signal for the microcontroller.</td>
-                </tr>
-                <tr>
-                    <td><strong>2 LEDs</strong></td>
-                    <td>Illuminates the room</td>
-                    <td> </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Component</th>
+                        <th>Function in System</th>
+                        <th>Technical Note</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>ATmega328P (Arduino)</strong></td>
+                        <td>Central Processing Unit</td>
+                        <td>The brain.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>LDR (Photoresistor)</strong></td>
+                        <td>Light Sensor</td>
+                        <td>Variable resistance that decreases as light increases.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>10kΩ Resistor</strong></td>
+                        <td>Voltage Divider</td>
+                        <td>Constructs a readable 0-5V signal for the microcontroller.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2 LEDs</strong></td>
+                        <td>Illuminates the room</td>
+                        <td> </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </section>
 
     <section id="design">
@@ -151,7 +176,7 @@
         <p>I used a voltage divider to convert the change in resistance from the photoresistor into a change in voltage that the microcontroller could understand. I programmed the system to map the analog input (0-1023) to a brightness level to create an inverse relationship.</p>
         
         <div class="media-container">
-            <img src="voltage-divider.png" alt="Voltage Divider Circuit" width="510" height="563">
+            <img src="voltage-divider.png" alt="Voltage Divider Circuit">
         </div>
 
         <p><strong>Code for the System:</strong></p>
@@ -217,26 +242,26 @@ void loop() {
     <section id="challenges">
         <h2>05 // Challenges I Faced</h2>
         <ul>
-            <li><strong>Coding Inverse Logic:</strong> Programming the C++ <code>map()</code> function required multiple iterations to ensure the LEDs brightened smoothly as the room got darker. Flipping the relationship between the sensor input and the output without causing brightness spikes was a significant hurdle.</li>
-            <li><strong>Signal Jittering:</strong> Ambient light can be unstable sometimes. Small fluctuations in the LDR readings initially caused the LEDs to "flicker." I solved this by implementing constraints and optimizing the loop delay to stabilize the feedback.</li>
-            <li><strong>Sensor Non-Linearity:</strong> Photoresistors do not react to light linearly. Calibrating the <code>sensorDark</code> and <code>sensorCutoff</code> values required multiple testing using the Serial Monitor to match the sensor's physical response to the lighting in the room.</li>
-            
-            <li><strong>Hardware Safety:</strong> I had to ensure that the current draw across the LED network remained below the 20mA per-pin safety limit of the ATmega328P to prevent the component wearing out over time.</li>
+            <li><strong>Coding Inverse Logic:</strong> Programming the C++ <code>map()</code> function required multiple iterations to ensure the LEDs brightened smoothly as the room got darker.</li>
+            <li><strong>Signal Jittering:</strong> Ambient light can be unstable. I solved this by implementing constraints and optimizing loop delay.</li>
+            <li><strong>Sensor Non-Linearity:</strong> Calibrating <code>sensorDark</code> and <code>sensorCutoff</code> values required multiple testing sessions using the Serial Monitor.</li>
+            <li><strong>Hardware Safety:</strong> Ensuring current draw remained below the 20mA per-pin safety limit of the ATmega328P.</li>
         </ul>
     </section>
 
     <section id="applications">
         <h2>06 // Areas where this can be used</h2>
         <ul>
-            <li><strong>Smart Home Integration:</strong> Can be used to automatically adjust interior lighting to reduce energy waste by utilizing natural sunlight during the day.</li>
-            <li><strong>Public Infrastructure:</strong> Energy-efficient street lights that adjust brightness based on dusk/dawn levels or weather conditions.</li>
-            <li><strong>Automotive Safety:</strong> Auto-dimming dashboard backlighting and rearview mirrors to prevent driver eye strain and glare.</li>
+            <li><strong>Smart Home Integration:</strong> Adjusting interior lighting to reduce energy waste.</li>
+            <li><strong>Public Infrastructure:</strong> Energy-efficient street lights that adjust brightness based on dusk/dawn.</li>
+            <li><strong>Automotive Safety:</strong> Auto-dimming dashboard backlighting.</li>
         </ul>
     </section>
 
     <footer>
         <p>VICTOR IYANUOLUWA AKANBI</p>
-        <p>ELECTRICAL ENGINEERING | TCU 2028</p>    </footer>
+        <p>ELECTRICAL ENGINEERING | TCU 2028</p>
+    </footer>
 </div>
 
 </body>
