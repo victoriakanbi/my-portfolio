@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Report | Automated Ambient Light Control</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --text-color: #e0e0e0;
+            --accent-color: #00ff41;
+            --dim-accent: rgba(0, 255, 65, 0.1);
+            --font-sub: 'Space Mono', monospace;
+        }
+
+        html, body {
+            margin: 0; padding: 0; min-height: 100%;
+            font-family: var(--font-sub);
+            background-color: var(--bg-color); color: var(--text-color);
+            background-image: 
+                linear-gradient(var(--dim-accent) 1px, transparent 1px),
+                linear-gradient(90deg, var(--dim-accent) 1px, transparent 1px);
+            background-size: 40px 40px;
+            line-height: 1.6;
+        }
+
+        .container { 
+            max-width: 1000px; 
+            margin: 40px auto; 
+            background: rgba(0,0,0,0.9); 
+            padding: 50px; 
+            border: 1px solid var(--accent-color); 
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.1); 
+        }
+        
+        /* New Top Image Styling */
+        .hero-image-container {
+            width: 100%;
+            border: 1px solid var(--accent-color);
+            margin-bottom: 30px;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .hero-image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        header { border-bottom: 2px solid var(--accent-color); margin-bottom: 40px; padding-bottom: 20px; }
+        .back-link { text-decoration: none; color: var(--accent-color); font-weight: bold; font-size: 0.8rem; letter-spacing: 1px; }
+
+        h1 { color: var(--accent-color); font-size: 2.5rem; margin-top: 10px; }
+        h2 { color: var(--accent-color); font-size: 1.4rem; border-bottom: 1px solid var(--dim-accent); padding-bottom: 5px; margin-top: 40px; }
+        
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.9rem; }
+        th { background: var(--dim-accent); color: var(--accent-color); text-align: left; padding: 12px; border: 1px solid var(--dim-accent); }
+        td { padding: 12px; border: 1px solid var(--dim-accent); vertical-align: top; }
+
+        /* List Styling for Challenges & Applications */
+        ul { list-style: none; padding-left: 0; }
+        ul li { position: relative; padding-left: 30px; margin-bottom: 15px; }
+        ul li::before { content: ">"; position: absolute; left: 0; color: var(--accent-color); font-weight: bold; }
+
+        .media-container { 
+            background: #151515; 
+            border: 1px solid #333; 
+            margin: 20px 0; 
+            overflow: hidden; 
+            display: flex;
+            justify-content: center;
+        }
+
+        .media-container img, .media-container video {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .code-block { background: #050505; border-left: 3px solid var(--accent-color); padding: 20px; color: var(--accent-color); overflow-x: auto; margin: 20px 0; }
+        
+        .equation-box {
+            text-align: center;
+            padding: 30px;
+            background: rgba(0, 255, 65, 0.05);
+            border: 1px dashed var(--accent-color);
+            margin: 20px 0;
+        }
+
+        footer { border-top: 1px solid var(--dim-accent); padding: 40px 0; font-size: 0.7rem; color: #555; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="index.html" class="back-link">< [BACK]</a>
+
+    <div class="hero-image-container">
+        <img src="top-banner.jpg" alt="Automated Ambient Light Control System Overview">
+    </div>
+    
+    <header>
+        <h1>Automated Ambient Light Control System</h1>
+        <p>A system that brightens or dims LED according to the lighting conditions of its environment.</p>
+    </header>
+
+    <section id="summary">
+        <h2>01 // Project Summary</h2>
+        <p>Ambient light changes throughout the day causing inconsistent brightness in a workspace. In this project, I created an automated system that watches the room and dims or brightens the LED inversely to the room's light level. This system maintains a lighting setpoint so that it saves energy consumption for only when it is needed.</p>
+    </section>
+
+    <section id="specs">
+        <h2>02 // Component Specifications</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Component</th>
+                    <th>Function in System</th>
+                    <th>Technical Note</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>ATmega328P (Arduino)</strong></td>
+                    <td>Central Processing Unit</td>
+                    <td>The brain.</td>
+                </tr>
+                <tr>
+                    <td><strong>LDR (Photoresistor)</strong></td>
+                    <td>Light Sensor</td>
+                    <td>Variable resistance that decreases as light increases.</td>
+                </tr>
+                <tr>
+                    <td><strong>10kΩ Resistor</strong></td>
+                    <td>Voltage Divider</td>
+                    <td>Constructs a readable 0-5V signal for the microcontroller.</td>
+                </tr>
+                <tr>
+                    <td><strong>2 LEDs</strong></td>
+                    <td>Illuminates the room</td>
+                    <td> </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section id="design">
+        <h2>03 // Theory & Design</h2>
+        <p>I used a voltage divider to convert the change in resistance from the photoresistor into a change in voltage that the microcontroller could understand. I programmed the system to map the analog input (0-1023) to a brightness level to create an inverse relationship.</p>
+        
+        <div class="media-container">
+            <img src="voltage-divider.png" alt="Voltage Divider Circuit" width="510" height="563">
+        </div>
+
+        <p><strong>Code for the System:</strong></p>
+        <p>Programmed in C++</p>
+
+        <div class="code-block">
+<pre>
+// Pin Definitions
+const int sensorPin = A0;
+const int ledPin1 = 9;
+const int ledPin2 = 10;
+
+// --- CALIBRATION ---
+const int sensorDark = 67;    // Full Brightness (255) at this level
+const int sensorCutoff = 800; // Full OFF (0) at this level
+// -------------------
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(ledPin1, OUTPUT);
+  pinMode(ledPin2, OUTPUT);
+}
+
+void loop() {
+  int sensorValue = analogRead(sensorPin);
+
+  // MAP FUNCTION
+  int brightness = map(sensorValue, sensorDark, sensorCutoff, 255, 0);
+
+  // CONSTRAIN
+  brightness = constrain(brightness, 0, 255);
+
+  analogWrite(ledPin1, brightness);
+  analogWrite(ledPin2, brightness);
+
+  Serial.print("Sensor: ");
+  Serial.print(sensorValue);
+  Serial.print(" | Brightness: ");
+  Serial.println(brightness);
+  
+  delay(20);
+}
+</pre>
+        </div>
+    </section>
+
+    <section id="validation">
+        <h2>04 // Testing and Validation</h2>
+        <p><strong>Demonstration Video:</strong></p>
+        <div class="media-container">
+            <video controls>
+                <source src="video1.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+
+        <p><strong>Image:</strong></p>
+        <div class="media-container">
+            <img src="photo1.jpg" alt="Physical Prototype - Breadboard View">
+        </div>
+    </section>
+
+    <section id="challenges">
+        <h2>05 // Challenges I Faced</h2>
+        <ul>
+            <li><strong>Coding Inverse Logic:</strong> Programming the C++ <code>map()</code> function required multiple iterations to ensure the LEDs brightened smoothly as the room got darker. Flipping the relationship between the sensor input and the output without causing brightness spikes was a significant hurdle.</li>
+            <li><strong>Signal Jittering:</strong> Ambient light can be unstable sometimes. Small fluctuations in the LDR readings initially caused the LEDs to "flicker." I solved this by implementing constraints and optimizing the loop delay to stabilize the feedback.</li>
+            <li><strong>Sensor Non-Linearity:</strong> Photoresistors do not react to light linearly. Calibrating the <code>sensorDark</code> and <code>sensorCutoff</code> values required multiple testing using the Serial Monitor to match the sensor's physical response to the lighting in the room.</li>
+            
+            <li><strong>Hardware Safety:</strong> I had to ensure that the current draw across the LED network remained below the 20mA per-pin safety limit of the ATmega328P to prevent the component wearing out over time.</li>
+        </ul>
+    </section>
+
+    <section id="applications">
+        <h2>06 // Areas where this can be used</h2>
+        <ul>
+            <li><strong>Smart Home Integration:</strong> Can be used to automatically adjust interior lighting to reduce energy waste by utilizing natural sunlight during the day.</li>
+            <li><strong>Public Infrastructure:</strong> Energy-efficient street lights that adjust brightness based on dusk/dawn levels or weather conditions.</li>
+            <li><strong>Automotive Safety:</strong> Auto-dimming dashboard backlighting and rearview mirrors to prevent driver eye strain and glare.</li>
+        </ul>
+    </section>
+
+    <footer>
+        <p>VICTOR IYANUOLUWA AKANBI</p>
+        <p>ELECTRICAL ENGINEERING | TCU 2028</p>    </footer>
+</div>
+
+</body>
+</html>
