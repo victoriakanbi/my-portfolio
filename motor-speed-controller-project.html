@@ -235,6 +235,26 @@
             \[ P = K_p \times e(t) \]
         </div>
         <p>This term’s purpose is to look at where the object is at the moment (present) and react accordingly. When an object has a large error (far away), \(P\) produces a large output to accelerate the motor.</p>
+
+        <h4 style="color: var(--accent-color); margin-top: 25px; font-size: 1.0rem;">b. The Integral Term (\(I\))</h4>
+        <div class="equation-box">
+            \[ I = K_i \times \int_{0}^{t} e(\tau) \, d\tau \simeq K_i \times \sum (e(t) \times \Delta t) \]
+        </div>
+        <p>This term looks at the history of the error and sum it up over time. If my motor stays slightly off-target in its speed, the error persists (albeit small), this math continually adds it up cycle by cycle. Eventually, \(I\) gently pushes the motor to speed up a tiny bit to erase any offset and eliminate the steady state error.</p>
+        <p>To prevent \(I\) from growing excessively large during long periods of large error, I clamped the accumulator in my code to be between -50 and +50.</p>
+
+        <div class="code-block">
+<pre>
+errorIntegral += error * dt;
+errorIntegral = constrain(errorIntegral, -50.0, 50.0);
+</pre>
+        </div>
+
+        <h4 style="color: var(--accent-color); margin-top: 25px; font-size: 1.0rem;">c. The Derivative Term (\(D\))</h4>
+        <div class="equation-box">
+            \[ D = K_d \times \frac{de(t)}{dt} \simeq K_d \times \frac{e(t) - e(t - \Delta t)}{\Delta t} \]
+        </div>
+        <p>\(D\) measures how fast the distance is moving toward or closing in on the target. If an object is moving toward the target rapidly \(\frac{e(t) - e(t - \Delta t)}{\Delta t}\) becomes a negative</p>
     </section>
 
     <section id="failures-challenges">
