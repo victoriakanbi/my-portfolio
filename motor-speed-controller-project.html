@@ -130,7 +130,7 @@
 <div class="container">
     <a href="index.html" class="back-link">&lt; [BACK]</a>
 
-    <div class="hero-image-container" style="width: 100%; border: 1px solid var(--accent-color); margin-bottom: 30px; overflow: hidden; display: flex; max-height: 420px;">
+    <div class="hero-image-container" style="width: 100%; max-width: 700px; border: 1px solid var(--accent-color); margin: 0 auto 30px auto; overflow: hidden; display: flex; max-height: 240px;">
         <img src="top_pic_motor_speed_controller.jpg" alt="Proximity-Modulated DC Motor Speed Controller Banner" style="width: 100%; height: auto; object-fit: cover; display: block;">
     </div>
     
@@ -251,7 +251,11 @@ errorIntegral = constrain(errorIntegral, -50.0, 50.0);
         </div>
 
         <h3 style="color: var(--accent-color); margin-top: 35px; font-size: 1.1rem;">4. Complete C++ Implementation Code</h3>
-        <div class="code-block">
+        <details style="background: #050505; border: 1px solid var(--accent-color); padding: 15px; margin: 20px 0; border-radius: 4px; cursor: pointer;">
+            <summary style="color: var(--accent-color); font-weight: bold; font-family: var(--font-sub); font-size: 0.9rem; user-select: none;">
+                [+] CLICK TO EXPAND / COLLAPSE FULL C++ SOURCE CODE
+            </summary>
+            <div class="code-block" style="border-left: none; padding: 15px 0 0 0; margin: 0;">
 <pre>
 #include &lt;Wire.h&gt;
 #include &lt;LiquidCrystal_I2C.h&gt;
@@ -411,7 +415,8 @@ void loop() {
   }
 }
 </pre>
-        </div>
+            </div>
+        </details>
     </section>
 
     <!-- HARDWARE DEMONSTRATION & PROTOTYPE MEDIA -->
