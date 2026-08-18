@@ -278,6 +278,9 @@ float Ki = 0.05;
 float Kd = 4.0;
 float TARGET_SETPOINT_CM = 15.0;
 
+// Motor Threshold
+const int MIN_OPERATING_PWM = 45; // Minimum PWM threshold to overcome static friction
+
 // PID Control Variables
 float errorIntegral = 0.0;
 float lastDistance = 15.0;
@@ -294,7 +297,7 @@ float measureDistanceCM() {
   digitalWrite(TRIG_PIN, HIGH);
   delayMicroseconds(10);
   digitalWrite(TRIG_PIN, LOW);
-  
+
   long duration = pulseIn(ECHO_PIN, HIGH, 25000);
   if (duration == 0) return lastDistance;
   float dist = (float)duration * 0.0343 / 2.0;
@@ -313,7 +316,6 @@ byte getLEDBitmask(int pwmVal) {
   return (byte)((1 &lt;&lt; numLeds) - 1);
 }
 
-// Tuning commands from Python (not really necessary)
 void processSerialCommands() {
   if (Serial.available() &gt; 0) {
     String cmd = Serial.readStringUntil('\n');
@@ -342,6 +344,7 @@ void setup() {
   pinMode(LATCH_PIN, OUTPUT);
   pinMode(CLOCK_PIN, OUTPUT);
 
+  // Set motor forward direction
   digitalWrite(IN1_PIN, HIGH);
   digitalWrite(IN2_PIN, LOW);
 
@@ -359,7 +362,7 @@ void loop() {
 
   unsigned long currentTime = millis();
 
-  // High-Frequency PID Execution Loop
+  // High-Frequency PID Execution Loop (25 Hz)
   if (currentTime - lastPIDTime &gt;= PID_INTERVAL_MS) {
     float dt = (float)(currentTime - lastPIDTime) / 1000.0;
     lastPIDTime = currentTime;
@@ -377,15 +380,20 @@ void loop() {
 
     // Raw PID Formula Output
     float rawPIDOutput = (Kp * error) + (Ki * errorIntegral) + (Kd * derivative);
-    
-    // What the motor physically gets
-    int pwmValue = constrain((int)rawPIDOutput, 0, 255);
 
-    // Motor &amp; LED Bar Graph
+    // Motor PWM with minimum operating threshold
+    int pwmValue = 0;
+    if (rawPIDOutput &gt; 1.0) {
+      pwmValue = constrain((int)rawPIDOutput, MIN_OPERATING_PWM, 255);
+    } else {
+      pwmValue = 0;
+    }
+
+    // Actuate motor and update LED bar graph
     analogWrite(ENABLE_PIN, pwmValue);
     writeShiftRegister(getLEDBitmask(pwmValue));
 
-    // Timestamp, Distance, Setpoint, Error, Raw_PID_Math, Actuated_PWM
+    // Telemetry stream: Timestamp, Distance, Setpoint, Error, Raw_PID_Math, Actuated_PWM
     Serial.print(currentTime);
     Serial.print(",");
     Serial.print(currentDistance, 2);
@@ -399,8 +407,10 @@ void loop() {
     Serial.println(pwmValue);
   }
 
+  // Low-Frequency LCD Telemetry Loop
   if (currentTime - lastLCDTime &gt;= LCD_INTERVAL_MS) {
     lastLCDTime = currentTime;
+
     lcd.setCursor(0, 0);
     lcd.print("Dist: ");
     lcd.print(lastDistance, 1);
