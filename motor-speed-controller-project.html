@@ -442,19 +442,9 @@ void loop() {
         <h2>04 // Failures, Challenges &amp; Solutions</h2>
         <ul>
             <li>
-                <strong>Ultrasonic Signal Noise &amp; Outlier Glitches:</strong> 
-                <br><em>Issue:</em> Acoustic reflections and target angle variations produced occasional fake zero readings or distance spikes.
-                <br><em>Solution:</em> Implemented a 5-sample median window filter on `measureDistanceCM()` alongside integral anti-windup clamping to prevent the PID loop from overreacting.
-            </li>
-            <li>
-                <strong>Acoustic Motor Whine at Standard PWM:</strong> 
-                <br><em>Issue:</em> Standard 490Hz PWM caused audible resonance in motor coils.
-                <br><em>Solution:</em> Reconfigured ATmega328P Timer1 registers to 20kHz, moving switching frequency into the silent ultrasonic spectrum.
-            </li>
-            <li>
-                <strong>Motor Jerk During Rapid Proximity Changes:</strong> 
-                <br><em>Issue:</em> Waving a hand quickly near the sensor caused high acceleration spikes that stressed the motor drive shaft.
-                <br><em>Solution:</em> Tuned the Derivative gain (\(K_d = 0.12\)) to act as a rate damper, smoothing rapid step changes into gradual velocity transitions.
+                <strong>1: Getting the 74HC595 Shift Register &amp; LED Bar Graph Working</strong>
+                <br><em>Problem:</em> I faced challenges both in the software part and hardware part. In the hardware, the LEDs wouldn't turn on in the testing phase, For the software, this was my first time using this component so I didn't know how to code it in C++
+                <br><em>Solution:</em> For the hardware, it turned out that a couple of LEDs were wired wrongly so I had to go back and fixed the shorted circuit and eventually the LEDs turned on in the testing phase, For the software part, I watched youtube videos, get help from reddit posts and eventually understood the component enough to write a functional code.
             </li>
         </ul>
     </section>
