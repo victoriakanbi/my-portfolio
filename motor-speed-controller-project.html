@@ -265,6 +265,169 @@ errorIntegral = constrain(errorIntegral, -50.0, 50.0);
         <div class="equation-box">
             \[ \text{PWM} = \text{constrain}(\text{PID Output}, 0, 255) \]
         </div>
+
+        <h3 style="color: var(--accent-color); margin-top: 35px; font-size: 1.1rem;">4. Complete C++ Implementation Code</h3>
+        <div class="code-block">
+<pre>
+#include &lt;Wire.h&gt;
+#include &lt;LiquidCrystal_I2C.h&gt;
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+// Pin Definitions
+const int DATA_PIN = 2;    // 74HC595 DS
+const int LATCH_PIN = 3;   // 74HC595 ST_CP
+const int CLOCK_PIN = 4;   // 74HC595 SH_CP
+const int ECHO_PIN = 6;    // HC-SR04 Echo
+const int TRIG_PIN = 7;    // HC-SR04 Trig
+const int IN1_PIN = 8;     // L293D IN1
+const int ENABLE_PIN = 9;  // L293D EN1 (PWM)
+const int IN2_PIN = 10;    // L293D IN2
+
+// PID Constants &amp; Target
+float Kp = 12.0;
+float Ki = 0.05;
+float Kd = 4.0;
+float TARGET_SETPOINT_CM = 15.0;
+
+// PID Control Variables
+float errorIntegral = 0.0;
+float lastDistance = 15.0;
+unsigned long lastPIDTime = 0;
+const int PID_INTERVAL_MS = 40; // 25 Hz Control Loop
+
+// LCD Update Timer
+unsigned long lastLCDTime = 0;
+const int LCD_INTERVAL_MS = 150;
+
+float measureDistanceCM() {
+  digitalWrite(TRIG_PIN, LOW);
+  delayMicroseconds(2);
+  digitalWrite(TRIG_PIN, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG_PIN, LOW);
+  
+  long duration = pulseIn(ECHO_PIN, HIGH, 25000);
+  if (duration == 0) return lastDistance;
+  float dist = (float)duration * 0.0343 / 2.0;
+  return constrain(dist, 2.0, 60.0);
+}
+
+void writeShiftRegister(byte data) {
+  digitalWrite(LATCH_PIN, LOW);
+  shiftOut(DATA_PIN, CLOCK_PIN, MSBFIRST, data);
+  digitalWrite(LATCH_PIN, HIGH);
+}
+
+byte getLEDBitmask(int pwmVal) {
+  int numLeds = map(pwmVal, 0, 255, 0, 8);
+  if (numLeds &lt;= 0) return 0x00;
+  return (byte)((1 &lt;&lt; numLeds) - 1);
+}
+
+// Tuning commands from Python (not really necessary)
+void processSerialCommands() {
+  if (Serial.available() &gt; 0) {
+    String cmd = Serial.readStringUntil('\n');
+    cmd.trim();
+    if (cmd.length() &gt;= 3) {
+      char type = cmd.charAt(0);
+      float val = cmd.substring(2).toFloat();
+      if (type == 'P' || type == 'p') Kp = val;
+      else if (type == 'I' || type == 'i') Ki = val;
+      else if (type == 'D' || type == 'd') Kd = val;
+      else if (type == 'S' || type == 's') TARGET_SETPOINT_CM = val;
+    }
+  }
+}
+
+void setup() {
+  Serial.begin(115200);
+  Serial.setTimeout(10);
+
+  pinMode(TRIG_PIN, OUTPUT);
+  pinMode(ECHO_PIN, INPUT);
+  pinMode(ENABLE_PIN, OUTPUT);
+  pinMode(IN1_PIN, OUTPUT);
+  pinMode(IN2_PIN, OUTPUT);
+  pinMode(DATA_PIN, OUTPUT);
+  pinMode(LATCH_PIN, OUTPUT);
+  pinMode(CLOCK_PIN, OUTPUT);
+
+  digitalWrite(IN1_PIN, HIGH);
+  digitalWrite(IN2_PIN, LOW);
+
+  lcd.init();
+  lcd.backlight();
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("PID Live Tuner");
+  delay(800);
+  lcd.clear();
+}
+
+void loop() {
+  processSerialCommands();
+
+  unsigned long currentTime = millis();
+
+  // High-Frequency PID Execution Loop
+  if (currentTime - lastPIDTime &gt;= PID_INTERVAL_MS) {
+    float dt = (float)(currentTime - lastPIDTime) / 1000.0;
+    lastPIDTime = currentTime;
+
+    float currentDistance = measureDistanceCM();
+    float error = currentDistance - TARGET_SETPOINT_CM;
+
+    // Integral with anti-windup clamping
+    errorIntegral += error * dt;
+    errorIntegral = constrain(errorIntegral, -50.0, 50.0);
+
+    // Derivative calculation
+    float derivative = (currentDistance - lastDistance) / dt;
+    lastDistance = currentDistance;
+
+    // Raw PID Formula Output
+    float rawPIDOutput = (Kp * error) + (Ki * errorIntegral) + (Kd * derivative);
+    
+    // What the motor physically gets
+    int pwmValue = constrain((int)rawPIDOutput, 0, 255);
+
+    // Motor &amp; LED Bar Graph
+    analogWrite(ENABLE_PIN, pwmValue);
+    writeShiftRegister(getLEDBitmask(pwmValue));
+
+    // Timestamp, Distance, Setpoint, Error, Raw_PID_Math, Actuated_PWM
+    Serial.print(currentTime);
+    Serial.print(",");
+    Serial.print(currentDistance, 2);
+    Serial.print(",");
+    Serial.print(TARGET_SETPOINT_CM, 2);
+    Serial.print(",");
+    Serial.print(error, 2);
+    Serial.print(",");
+    Serial.print(rawPIDOutput, 2);
+    Serial.print(",");
+    Serial.println(pwmValue);
+  }
+
+  if (currentTime - lastLCDTime &gt;= LCD_INTERVAL_MS) {
+    lastLCDTime = currentTime;
+    lcd.setCursor(0, 0);
+    lcd.print("Dist: ");
+    lcd.print(lastDistance, 1);
+    lcd.print("cm   ");
+
+    lcd.setCursor(0, 1);
+    lcd.print("SP:");
+    lcd.print((int)TARGET_SETPOINT_CM);
+    lcd.print(" P:");
+    lcd.print((int)Kp);
+    lcd.print("   ");
+  }
+}
+</pre>
+        </div>
     </section>
 
     <!-- HARDWARE DEMONSTRATION & PROTOTYPE MEDIA -->
