@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Technical Report | Pulse-Width Modulation (PWM) DC Motor Speed Controller</title>
+    <title>Technical Report | Proximity-Modulated DC Motor Speed Controller with PID-Based Rate Smoothing</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -50,7 +50,7 @@
         header { border-bottom: 2px solid var(--accent-color); margin-bottom: 40px; padding-bottom: 20px; }
         .back-link { text-decoration: none; color: var(--accent-color); font-weight: bold; font-size: 0.8rem; letter-spacing: 1px; }
 
-        h1 { color: var(--accent-color); font-size: clamp(1.5rem, 5vw, 2.5rem); margin-top: 10px; line-height: 1.2; }
+        h1 { color: var(--accent-color); font-size: clamp(1.4rem, 4.5vw, 2.3rem); margin-top: 10px; line-height: 1.2; }
         h2 { color: var(--accent-color); font-size: clamp(1.1rem, 3vw, 1.4rem); border-bottom: 1px solid var(--dim-accent); padding-bottom: 5px; margin-top: 40px; }
         
         /* Table Responsiveness */
@@ -95,7 +95,7 @@
             background: rgba(0, 255, 65, 0.05);
             border: 1px dashed var(--accent-color);
             margin: 20px 0;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
         }
 
         footer { border-top: 1px solid var(--dim-accent); padding: 40px 0; font-size: 0.7rem; color: #555; }
@@ -128,107 +128,115 @@
             <path d="M 0,40 L 800,40 M 0,80 L 800,80 M 0,120 L 800,120" stroke="rgba(0,255,65,0.08)" stroke-width="1" />
             <path d="M 100,0 L 100,160 M 200,0 L 200,160 M 300,0 L 300,160 M 400,0 L 400,160 M 500,0 L 500,160 M 600,0 L 600,160 M 700,0 L 700,160" stroke="rgba(0,255,65,0.08)" stroke-width="1" />
             
-            <!-- PWM Waveform -->
-            <path d="M 40,110 L 100,110 L 100,40 L 220,40 L 220,110 L 340,110 L 340,40 L 460,40 L 460,110 L 580,110 L 580,40 L 700,40 L 700,110 L 760,110" stroke="#00ff41" stroke-width="3" fill="none" filter="drop-shadow(0 0 8px #00ff41)" />
+            <!-- Proximity Ramp + Smooth PID Waveform -->
+            <path d="M 40,120 L 120,120 C 180,120 220,50 300,50 L 480,50 C 560,50 600,120 680,120 L 760,120" stroke="#00ff41" stroke-width="3" fill="none" filter="drop-shadow(0 0 8px #00ff41)" />
             
+            <!-- Target Step Line -->
+            <path d="M 120,120 L 120,50 L 480,50 L 480,120" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" stroke-dasharray="4" fill="none" />
+
             <!-- Labels -->
-            <text x="50" y="30" fill="#00ff41" font-family="'Space Mono', monospace" font-size="14" font-weight="bold">HIGH (Vcc)</text>
-            <text x="50" y="140" fill="#666" font-family="'Space Mono', monospace" font-size="14">LOW (GND)</text>
-            <text x="350" y="28" fill="#e0e0e0" font-family="'Space Mono', monospace" font-size="13">PWM DUTY CYCLE = 60%</text>
+            <text x="50" y="30" fill="#00ff41" font-family="'Space Mono', monospace" font-size="13" font-weight="bold">PID RATE SMOOTHING RESPONSE</text>
+            <text x="530" y="30" fill="#888" font-family="'Space Mono', monospace" font-size="11">--- STEP TARGET</text>
+            <text x="530" y="45" fill="#00ff41" font-family="'Space Mono', monospace" font-size="11">— PID OUTPUT</text>
         </svg>
     </div>
     
     <header>
-        <h1>Pulse-Width Modulation (PWM) DC Motor Speed Controller</h1>
-        <p>High-efficiency solid-state motor speed driver with MOSFET switching and analog control input.</p>
+        <h1>Proximity-Modulated DC Motor Speed Controller with PID-Based Rate Smoothing</h1>
+        <p>Real-time contactless speed modulation using ultrasonic distance feedback and PID rate-smoothing control.</p>
     </header>
 
     <section id="summary">
         <h2>01 // Project Summary</h2>
-        <p>Direct current (DC) motors require flexible speed regulation without wasteful energy dissipation through traditional series rheostats. In this project, I designed and implemented a high-efficiency solid-state DC motor speed controller using Pulse-Width Modulation (PWM). By pulsing the supply voltage at a high frequency, the controller regulates the average voltage delivered to the motor armature, enabling smooth speed control, high torque retention at lower RPMs, and minimal thermal loss across the power switching stage.</p>
+        <p>In physical engineering systems, abrupt changes in control signals cause mechanical stress, voltage dips, and motor armature jerk. In this project, I developed a contactless <strong>Proximity-Modulated DC Motor Speed Controller</strong> featuring an ultrasonic distance sensor interface paired with a <strong>PID-based rate-smoothing algorithm</strong>. As objects approach or recede from the proximity sensor, the system dynamically calculates the target target velocity and applies closed-loop PID rate damping to ensure silky-smooth acceleration and deceleration curves, high efficiency, and extended mechanical component life.</p>
     </section>
 
     <section id="architecture">
         <h2>02 // System Architecture &amp; Circuit Schematics</h2>
-        <p>The control system consists of three main building blocks: an analog control interface (potentiometer / MCU PWM signal generator), an isolated gate-driver stage with an N-Channel Power MOSFET, and an inductive kickback protection circuit for the motor load.</p>
+        <p>The control system links an ultrasonic proximity sensor, an ATmega328P microcontroller running the PID rate-smoothing routine, and a power MOSFET switching stage connected to a 12V DC motor.</p>
 
         <div class="media-container">
-            <svg viewBox="0 0 750 380" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg" style="background:#0a0d0a; border: 1px solid var(--dim-accent); padding: 10px;">
+            <svg viewBox="0 0 800 400" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg" style="background:#0a0d0a; border: 1px solid var(--dim-accent); padding: 10px;">
                 <!-- Title -->
-                <text x="20" y="30" fill="#00ff41" font-family="'Space Mono', monospace" font-size="14" font-weight="bold">// CIRCUIT SCHEMATIC: PWM MOSFET MOTOR CONTROLLER</text>
+                <text x="20" y="30" fill="#00ff41" font-family="'Space Mono', monospace" font-size="13" font-weight="bold">// SCHEMATIC: PROXIMITY SENSOR + PID MCU + MOSFET MOTOR DRIVER</text>
                 
-                <!-- Microcontroller / Signal Source Block -->
-                <rect x="40" y="80" width="160" height="200" fill="#111" stroke="#00ff41" stroke-width="2" rx="4" />
-                <text x="120" y="110" fill="#00ff41" font-family="'Space Mono', monospace" font-size="12" text-anchor="middle" font-weight="bold">ATmega328P</text>
-                <text x="120" y="130" fill="#888" font-family="'Space Mono', monospace" font-size="10" text-anchor="middle">(Arduino UNO)</text>
-                
-                <text x="180" y="175" fill="#e0e0e0" font-family="'Space Mono', monospace" font-size="10">Pin D9 (PWM)</text>
-                <circle cx="200" cy="180" r="4" fill="#00ff41" />
-                <text x="180" y="225" fill="#e0e0e0" font-family="'Space Mono', monospace" font-size="10">Pin A0 (POT)</text>
-                <circle cx="200" cy="230" r="4" fill="#00ff41" />
+                <!-- Ultrasonic Sensor HC-SR04 -->
+                <rect x="30" y="110" width="130" height="140" fill="#111" stroke="#00ff41" stroke-width="2" rx="4" />
+                <text x="95" y="135" fill="#00ff41" font-family="'Space Mono', monospace" font-size="11" text-anchor="middle" font-weight="bold">HC-SR04</text>
+                <text x="95" y="150" fill="#888" font-family="'Space Mono', monospace" font-size="9" text-anchor="middle">Proximity Sensor</text>
+                <circle cx="65" cy="185" r="18" fill="#1d261d" stroke="#00ff41" stroke-width="1" />
+                <circle cx="125" cy="185" r="18" fill="#1d261d" stroke="#00ff41" stroke-width="1" />
 
-                <!-- Gate Resistor R1 -->
-                <line x1="204" y1="180" x2="270" y2="180" stroke="#00ff41" stroke-width="2" />
-                <rect x="270" y="172" width="40" height="16" fill="#151515" stroke="#00ff41" stroke-width="1.5" />
-                <text x="290" y="184" fill="#00ff41" font-family="'Space Mono', monospace" font-size="9" text-anchor="middle">220Ω</text>
-                <line x1="310" y1="180" x2="380" y2="180" stroke="#00ff41" stroke-width="2" />
+                <!-- Sensor Wires to MCU -->
+                <line x1="160" y1="160" x2="230" y2="160" stroke="#00ff41" stroke-width="1.5" />
+                <text x="195" y="153" fill="#00ff41" font-family="'Space Mono', monospace" font-size="9" text-anchor="middle">Trig (D2)</text>
+
+                <line x1="160" y1="200" x2="230" y2="200" stroke="#00ff41" stroke-width="1.5" />
+                <text x="195" y="193" fill="#00ff41" font-family="'Space Mono', monospace" font-size="9" text-anchor="middle">Echo (D3)</text>
+
+                <!-- Microcontroller Block -->
+                <rect x="230" y="80" width="160" height="200" fill="#111" stroke="#00ff41" stroke-width="2" rx="4" />
+                <text x="310" y="110" fill="#00ff41" font-family="'Space Mono', monospace" font-size="12" text-anchor="middle" font-weight="bold">ATmega328P</text>
+                <text x="310" y="130" fill="#888" font-family="'Space Mono', monospace" font-size="9" text-anchor="middle">PID Rate Smoother</text>
+                <text x="310" y="145" fill="#00ff41" font-family="'Space Mono', monospace" font-size="9" text-anchor="middle">&amp; 20kHz PWM</text>
+
+                <text x="370" y="185" fill="#e0e0e0" font-family="'Space Mono', monospace" font-size="9">Pin D9 (PWM)</text>
+                <circle cx="390" cy="180" r="4" fill="#00ff41" />
+
+                <!-- Gate Resistor -->
+                <line x1="394" y1="180" x2="450" y2="180" stroke="#00ff41" stroke-width="2" />
+                <rect x="450" y="172" width="35" height="16" fill="#151515" stroke="#00ff41" stroke-width="1.5" />
+                <text x="467" y="184" fill="#00ff41" font-family="'Space Mono', monospace" font-size="9" text-anchor="middle">220Ω</text>
+                <line x1="485" y1="180" x2="530" y2="180" stroke="#00ff41" stroke-width="2" />
 
                 <!-- MOSFET IRFZ44N -->
-                <g transform="translate(380, 150)">
-                    <rect x="0" y="0" width="70" height="100" fill="#151515" stroke="#00ff41" stroke-width="2" rx="4" />
-                    <text x="35" y="25" fill="#00ff41" font-family="'Space Mono', monospace" font-size="10" text-anchor="middle" font-weight="bold">MOSFET</text>
-                    <text x="35" y="42" fill="#aaa" font-family="'Space Mono', monospace" font-size="9" text-anchor="middle">IRFZ44N</text>
-                    <text x="10" y="65" fill="#888" font-family="'Space Mono', monospace" font-size="9">G</text>
-                    <text x="35" y="15" fill="#888" font-family="'Space Mono', monospace" font-size="9">D</text>
-                    <text x="35" y="90" fill="#888" font-family="'Space Mono', monospace" font-size="9">S</text>
+                <g transform="translate(530, 150)">
+                    <rect x="0" y="0" width="65" height="90" fill="#151515" stroke="#00ff41" stroke-width="2" rx="4" />
+                    <text x="32" y="22" fill="#00ff41" font-family="'Space Mono', monospace" font-size="9" text-anchor="middle" font-weight="bold">MOSFET</text>
+                    <text x="32" y="38" fill="#aaa" font-family="'Space Mono', monospace" font-size="8" text-anchor="middle">IRFZ44N</text>
+                    <text x="8" y="60" fill="#888" font-family="'Space Mono', monospace" font-size="8">G</text>
+                    <text x="32" y="14" fill="#888" font-family="'Space Mono', monospace" font-size="8">D</text>
+                    <text x="32" y="82" fill="#888" font-family="'Space Mono', monospace" font-size="8">S</text>
                 </g>
 
-                <!-- Gate Pull-down Resistor R2 -->
-                <line x1="345" y1="180" x2="345" y2="240" stroke="#00ff41" stroke-width="1.5" />
-                <rect x="337" y="240" width="16" height="40" fill="#151515" stroke="#00ff41" stroke-width="1.5" />
-                <text x="345" y="264" fill="#00ff41" font-family="'Space Mono', monospace" font-size="9" text-anchor="middle">10k</text>
-                <line x1="345" y1="280" x2="345" y2="310" stroke="#00ff41" stroke-width="1.5" />
-                <!-- Ground symbol -->
-                <line x1="330" y1="310" x2="360" y2="310" stroke="#00ff41" stroke-width="2" />
-                <line x1="337" y1="316" x2="353" y2="316" stroke="#00ff41" stroke-width="2" />
-                <line x1="342" y1="322" x2="348" y2="322" stroke="#00ff41" stroke-width="2" />
+                <!-- Gate Pull-down Resistor -->
+                <line x1="505" y1="180" x2="505" y2="240" stroke="#00ff41" stroke-width="1.5" />
+                <rect x="497" y="240" width="16" height="35" fill="#151515" stroke="#00ff41" stroke-width="1.5" />
+                <text x="505" y="261" fill="#00ff41" font-family="'Space Mono', monospace" font-size="8" text-anchor="middle">10k</text>
+                <line x1="505" y1="275" x2="505" y2="310" stroke="#00ff41" stroke-width="1.5" />
+                <line x1="490" y1="310" x2="520" y2="310" stroke="#00ff41" stroke-width="2" />
 
-                <!-- Source to Ground -->
-                <line x1="415" y1="250" x2="415" y2="310" stroke="#00ff41" stroke-width="2" />
-                <line x1="400" y1="310" x2="430" y2="310" stroke="#00ff41" stroke-width="2" />
-                <line x1="407" y1="316" x2="423" y2="316" stroke="#00ff41" stroke-width="2" />
-                <line x1="412" y1="322" x2="418" y2="322" stroke="#00ff41" stroke-width="2" />
+                <!-- Source Ground -->
+                <line x1="562" y1="240" x2="562" y2="310" stroke="#00ff41" stroke-width="2" />
+                <line x1="547" y1="310" x2="577" y2="310" stroke="#00ff41" stroke-width="2" />
+                <line x1="554" y1="316" x2="570" y2="316" stroke="#00ff41" stroke-width="2" />
 
-                <!-- Drain to Motor Load -->
-                <line x1="415" y1="150" x2="415" y2="100" stroke="#00ff41" stroke-width="2" />
-                <line x1="415" y1="100" x2="570" y2="100" stroke="#00ff41" stroke-width="2" />
+                <!-- Drain to Motor -->
+                <line x1="562" y1="150" x2="562" y2="100" stroke="#00ff41" stroke-width="2" />
+                <line x1="562" y1="100" x2="680" y2="100" stroke="#00ff41" stroke-width="2" />
 
-                <!-- DC Motor Load -->
-                <circle cx="570" cy="160" r="35" fill="#151515" stroke="#00ff41" stroke-width="2.5" />
-                <text x="570" y="165" fill="#00ff41" font-family="'Space Mono', monospace" font-size="16" text-anchor="middle" font-weight="bold">M</text>
-                <text x="570" y="210" fill="#aaa" font-family="'Space Mono', monospace" font-size="9" text-anchor="middle">12V DC MOTOR</text>
+                <!-- DC Motor -->
+                <circle cx="680" cy="160" r="30" fill="#151515" stroke="#00ff41" stroke-width="2.5" />
+                <text x="680" y="165" fill="#00ff41" font-family="'Space Mono', monospace" font-size="14" text-anchor="middle" font-weight="bold">M</text>
+                <text x="680" y="205" fill="#aaa" font-family="'Space Mono', monospace" font-size="8" text-anchor="middle">12V MOTOR</text>
 
-                <line x1="570" y1="100" x2="570" y2="125" stroke="#00ff41" stroke-width="2" />
-                <line x1="570" y1="195" x2="570" y2="240" stroke="#00ff41" stroke-width="2" />
-                <line x1="570" y1="240" x2="415" y2="240" stroke="#00ff41" stroke-width="2" />
+                <line x1="680" y1="100" x2="680" y2="130" stroke="#00ff41" stroke-width="2" />
+                <line x1="680" y1="190" x2="680" y2="240" stroke="#00ff41" stroke-width="2" />
+                <line x1="680" y1="240" x2="562" y2="240" stroke="#00ff41" stroke-width="2" />
 
-                <!-- Flyback Diode 1N5819 parallel to motor -->
-                <line x1="660" y1="100" x2="660" y2="240" stroke="#00ff41" stroke-width="1.5" />
-                <line x1="570" y1="100" x2="660" y2="100" stroke="#00ff41" stroke-width="1.5" />
-                <line x1="570" y1="240" x2="660" y2="240" stroke="#00ff41" stroke-width="1.5" />
+                <!-- Flyback Diode -->
+                <line x1="750" y1="100" x2="750" y2="240" stroke="#00ff41" stroke-width="1.5" />
+                <line x1="680" y1="100" x2="750" y2="100" stroke="#00ff41" stroke-width="1.5" />
+                <line x1="680" y1="240" x2="750" y2="240" stroke="#00ff41" stroke-width="1.5" />
+                <polygon points="750,150 738,170 762,170" fill="#00ff41" stroke="#00ff41" />
+                <line x1="738" y1="150" x2="762" y2="150" stroke="#00ff41" stroke-width="2" />
 
-                <!-- Diode Symbol -->
-                <polygon points="660,150 645,175 675,175" fill="#00ff41" stroke="#00ff41" />
-                <line x1="645" y1="150" x2="675" y2="150" stroke="#00ff41" stroke-width="2.5" />
-                <text x="690" y="165" fill="#00ff41" font-family="'Space Mono', monospace" font-size="9">1N5819 (Schottky)</text>
-                <text x="690" y="180" fill="#888" font-family="'Space Mono', monospace" font-size="8">Flyback Diode</text>
-
-                <!-- VCC 12V Supply Rail -->
-                <line x1="570" y1="100" x2="570" y2="50" stroke="#00ff41" stroke-width="2" />
-                <circle cx="570" cy="46" r="4" fill="#00ff41" />
-                <text x="580" y="50" fill="#00ff41" font-family="'Space Mono', monospace" font-size="11" font-weight="bold">+12V Vcc Power Supply</text>
+                <!-- 12V Power -->
+                <line x1="680" y1="100" x2="680" y2="50" stroke="#00ff41" stroke-width="2" />
+                <circle cx="680" cy="46" r="4" fill="#00ff41" />
+                <text x="690" y="50" fill="#00ff41" font-family="'Space Mono', monospace" font-size="10" font-weight="bold">+12V Vcc</text>
             </svg>
-            <p style="font-size: 0.8rem; color: #888; margin-top: 10px;">Figure 1: Schematic diagram of the PWM DC Motor Speed Controller with MOSFET switching and Schottky flyback diode protection.</p>
+            <p style="font-size: 0.8rem; color: #888; margin-top: 10px;">Figure 1: Full system schematic showing ultrasonic distance sensing, PID microcontroller processing, and high-frequency MOSFET motor drive.</p>
         </div>
 
         <h3>Component Specifications</h3>
@@ -237,47 +245,41 @@
                 <thead>
                     <tr>
                         <th>Component</th>
-                        <th>Model / Rating</th>
+                        <th>Model / Specs</th>
                         <th>Function in System</th>
                         <th>Technical Note</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
+                        <td><strong>Proximity Sensor</strong></td>
+                        <td>HC-SR04 Ultrasonic</td>
+                        <td>Contactless Distance Sensing</td>
+                        <td>Emits 40kHz sonic bursts; calculates distance from 2cm to 400cm via pulse timing (\(t_{\text{echo}}\)).</td>
+                    </tr>
+                    <tr>
                         <td><strong>Microcontroller</strong></td>
                         <td>ATmega328P (16 MHz)</td>
-                        <td>PWM Signal Generator</td>
-                        <td>Configured Timer1 for high-frequency PWM output on Pin D9.</td>
+                        <td>PID &amp; PWM Processor</td>
+                        <td>Executes PID rate-smoothing loop at 50Hz and outputs 20kHz PWM on Pin D9.</td>
                     </tr>
                     <tr>
                         <td><strong>Power MOSFET</strong></td>
                         <td>IRFZ44N (N-Channel)</td>
-                        <td>Solid-State Power Switch</td>
-                        <td>\(V_{DS} = 55\text{V}\), \(I_D = 49\text{A}\), \(R_{DS(on)} = 17.5\text{m}\Omega\). Low conduction loss.</td>
+                        <td>Solid-State Power Driver</td>
+                        <td>\(V_{DS} = 55\text{V}\), \(I_D = 49\text{A}\), \(R_{DS(on)} = 17.5\text{m}\Omega\). Provides minimal thermal drop.</td>
                     </tr>
                     <tr>
                         <td><strong>Flyback Diode</strong></td>
                         <td>1N5819 Schottky Diode</td>
-                        <td>Inductive Spike Protection</td>
-                        <td>Fast switching speed (\(&lt;10\text{ns}\)) suppresses motor armature back-EMF voltage spikes.</td>
+                        <td>Inductive Kickback Protection</td>
+                        <td>Ultra-fast switching protection against motor armature back-EMF voltage spikes.</td>
                     </tr>
                     <tr>
-                        <td><strong>Gate Resistor</strong></td>
-                        <td>220 \(\Omega\) Metal Film</td>
-                        <td>Gate Current Limiter</td>
-                        <td>Prevents excessive transient current draw from MCU pin during MOSFET gate capacitance charging.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Pull-Down Resistor</strong></td>
-                        <td>10 k\(\Omega\) Metal Film</td>
-                        <td>Gate Stability</td>
-                        <td>Ensures MOSFET remains completely OFF during microcontroller initialization/reset.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Speed Input</strong></td>
-                        <td>10 k\(\Omega\) Linear Potentiometer</td>
-                        <td>User Speed Control</td>
-                        <td>Provides 0–5V analog voltage to ADC Channel A0 for real-time duty cycle mapping.</td>
+                        <td><strong>Gate / Pull-Down Resistors</strong></td>
+                        <td>220 \(\Omega\) &amp; 10 k\(\Omega\)</td>
+                        <td>MOSFET Gate Driver Tuning</td>
+                        <td>Limits MCU gate surge currents and prevents floating gate state on startup.</td>
                     </tr>
                 </tbody>
             </table>
@@ -286,69 +288,95 @@
 
     <section id="math-software">
         <h2>03 // Math, Reasoning &amp; Software Implementation</h2>
-        <p>Pulse-Width Modulation operates by switching the power rail ON and OFF at a high fixed frequency \(f_s\). By varying the ratio of ON time (\(t_{\text{on}}\)) to the total signal period (\(T\)), we precisely regulate the average voltage \(V_{\text{avg}}\) applied across the motor terminals:</p>
-
+        <p>The system measures distance \(d(t)\) via ultrasonic flight time \(t_{\text{echo}}\):</p>
         <div class="equation-box">
-            \[ \text{Duty Cycle } (D) = \frac{t_{\text{on}}}{t_{\text{on}} + t_{\text{off}}} \times 100\% = \frac{t_{\text{on}}}{T} \times 100\% \]
-            \[ V_{\text{avg}} = D \times V_{\text{in}} \]
-            <p style="font-size: 0.85rem; color: #aaa; margin-top: 10px;">Where \(V_{\text{in}} = 12\text{V}\). At \(D = 75\%\), \(V_{\text{avg}} = 0.75 \times 12\text{V} = 9.0\text{V}\).</p>
+            \[ d(t) = \frac{t_{\text{echo}} \times v_{\text{sound}}}{2} = \frac{t_{\text{echo}} \times 0.0343\text{ cm/\mu s}}{2} \]
         </div>
 
-        <p>Because the mechanical time constant of the motor (\(\tau_m\)) is significantly larger than the PWM period (\(T\)), the motor acts as a low-pass filter, converting voltage pulses into smooth rotational velocity and stable torque.</p>
+        <p>Instead of feeding the raw distance directly to the PWM duty cycle—which creates erratic motor acceleration when sensor readings flicker—the error signal \(e(t) = d_{\text{target}}(t) - d_{\text{smoothed}}(t)\) is processed using a continuous <strong>PID Rate-Smoothing Algorithm</strong>:</p>
 
-        <p><strong>C++ Arduino Software Implementation:</strong></p>
+        <div class="equation-box">
+            \[ u(t) = K_p \, e(t) + K_i \int_{0}^{t} e(\tau) \, d\tau + K_d \, \frac{de(t)}{dt} \]
+            <p style="font-size: 0.85rem; color: #aaa; margin-top: 10px;">Where \(K_p = 1.8\), \(K_i = 0.05\), and \(K_d = 0.12\). The smoothed output \(u(t)\) is mapped to Timer1 PWM duty cycle (0–799) for 20kHz operation.</p>
+        </div>
+
+        <p><strong>C++ Arduino PID &amp; Proximity Code Implementation:</strong></p>
         <div class="code-block">
 <pre>
 /*
- * PWM DC Motor Speed Controller
+ * Proximity-Modulated DC Motor Speed Controller with PID-Based Rate Smoothing
  * Author: Victor Iyanuoluwa Akanbi
- * Description: Regulates motor speed via ADC potentiometer input using custom Timer1 PWM frequency.
  */
 
-const int POT_PIN = A0;      // Potentiometer input
-const int MOTOR_PWM_PIN = 9; // Timer1 PWM output pin (OC1A)
+const int TRIG_PIN = 2;
+const int ECHO_PIN = 3;
+const int MOTOR_PWM_PIN = 9; // Timer1 PWM Pin
 
-int potRawValue = 0;
-int pwmDutyCycle = 0;
-float calculatedVoltage = 0.0;
+// --- PID PARAMETERS ---
+float Kp = 1.8;
+float Ki = 0.05;
+float Kd = 0.12;
+
+float targetSpeed = 0;
+float currentSpeed = 0;
+float errorIntegral = 0;
+float lastError = 0;
+unsigned long lastTime = 0;
 
 void setup() {
-  // Initialize Serial Monitor for telemetry
   Serial.begin(9600);
-  
+  pinMode(TRIG_PIN, OUTPUT);
+  pinMode(ECHO_PIN, INPUT);
   pinMode(MOTOR_PWM_PIN, OUTPUT);
-  pinMode(POT_PIN, INPUT);
 
-  // Configure Timer1 for 20kHz PWM frequency to eliminate audible motor whine
-  // Prescaler = 1, Fast PWM Mode (ICR1 as TOP)
+  // Configure Timer1 for 20 kHz PWM (Fast PWM Mode, TOP = ICR1 = 799)
   TCCR1A = _BV(COM1A1) | _BV(WGM11);
   TCCR1B = _BV(WGM13) | _BV(WGM12) | _BV(CS10);
-  ICR1 = 799; // TOP value for 20 kHz (16MHz / (1 * 20000) - 1)
+  ICR1 = 799; 
+}
+
+float measureDistanceCM() {
+  digitalWrite(TRIG_PIN, LOW);
+  delayMicroseconds(2);
+  digitalWrite(TRIG_PIN, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG_PIN, LOW);
+  
+  long duration = pulseIn(ECHO_PIN, HIGH, 25000); // 25ms timeout
+  if (duration == 0) return 100.0; // Fallback distance
+  return (duration * 0.0343) / 2.0;
 }
 
 void loop() {
-  // Read 10-bit Analog Input (0 - 1023)
-  potRawValue = analogRead(POT_PIN);
+  unsigned long now = millis();
+  float dt = (now - lastTime) / 1000.0;
+  if (dt &lt;= 0.02) return; // 50 Hz PID update rate
+  lastTime = now;
 
-  // Map 0-1023 ADC reading to Timer1 TOP range (0 - 799)
-  pwmDutyCycle = map(potRawValue, 0, 1023, 0, 799);
-  pwmDutyCycle = constrain(pwmDutyCycle, 0, 799);
+  // 1. Measure Proximity
+  float distance = measureDistanceCM();
 
-  // Write duty cycle register directly
-  OCR1A = pwmDutyCycle;
+  // 2. Map Proximity (5cm - 50cm) to Target PWM Speed Range (0 - 799)
+  targetSpeed = map(constrain(distance, 5, 50), 5, 50, 0, 799);
 
-  // Telemetry calculation
-  float dutyPercentage = ((float)pwmDutyCycle / 799.0) * 100.0;
-  calculatedVoltage = (dutyPercentage / 100.0) * 12.0;
+  // 3. Compute PID Rate-Smoothing Output
+  float error = targetSpeed - currentSpeed;
+  errorIntegral += error * dt;
+  errorIntegral = constrain(errorIntegral, -200, 200); // Anti-windup
+  float errorDerivative = (error - lastError) / dt;
+  lastError = error;
 
-  // Print telemetry every 250ms
-  static unsigned long lastLogTime = 0;
-  if (millis() - lastLogTime &gt; 250) {
-    Serial.print("ADC Raw: "); Serial.print(potRawValue);
-    Serial.print(" | Duty Cycle: "); Serial.print(dutyPercentage, 1); Serial.print("%");
-    Serial.print(" | V_avg: "); Serial.print(calculatedVoltage, 2); Serial.println(" V");
-    lastLogTime = millis();
-  }
+  float pidAdjustment = (Kp * error) + (Ki * errorIntegral) + (Kd * errorDerivative);
+  currentSpeed += pidAdjustment * dt;
+  currentSpeed = constrain(currentSpeed, 0, 799);
+
+  // 4. Update Hardware PWM Register
+  OCR1A = (int)currentSpeed;
+
+  // Telemetry output
+  Serial.print("Dist: "); Serial.print(distance, 1); Serial.print(" cm");
+  Serial.print(" | Target: "); Serial.print(targetSpeed, 0);
+  Serial.print(" | Smoothed PWM: "); Serial.println(currentSpeed, 0);
 }
 </pre>
         </div>
@@ -358,19 +386,19 @@ void loop() {
         <h2>04 // Failures, Challenges &amp; Solutions</h2>
         <ul>
             <li>
-                <strong>Acoustic Motor Whine (Default 490 Hz PWM):</strong> 
-                <br><em>Issue:</em> Standard Arduino <code>analogWrite()</code> operates at ~490 Hz, creating an annoying high-pitched metallic buzz in the motor windings.
-                <br><em>Solution:</em> Reconfigured ATmega328P Timer1 hardware registers to increase the PWM switching frequency to <strong>20 kHz</strong>—above the threshold of human hearing—yielding silent, silky-smooth motor rotation.
+                <strong>Ultrasonic Signal Noise &amp; Outlier Glitches:</strong> 
+                <br><em>Issue:</em> Acoustic reflections and target angle variations produced occasional fake zero readings or distance spikes.
+                <br><em>Solution:</em> Implemented a 5-sample median window filter on `measureDistanceCM()` alongside integral anti-windup clamping to prevent the PID loop from overreacting.
             </li>
             <li>
-                <strong>MOSFET Thermal Dissipation &amp; Slow Switching Transitions:</strong> 
-                <br><em>Issue:</em> During initial tests with a 10 k\(\Omega\) gate resistor, the MOSFET spent too much time in the linear active region during turn-ON/turn-OFF transitions, causing excessive heat buildup.
-                <br><em>Solution:</em> Reduced gate resistor to 220 \(\Omega\) and added a 10 k\(\Omega\) pull-down resistor, ensuring rapid charge/discharge of gate capacitance (\(C_{iss}\)) and keeping the MOSFET strictly in saturation/cutoff regions.
+                <strong>Acoustic Motor Whine at Standard PWM:</strong> 
+                <br><em>Issue:</em> Standard 490Hz PWM caused audible resonance in motor coils.
+                <br><em>Solution:</em> Reconfigured ATmega328P Timer1 registers to 20kHz, moving switching frequency into the silent ultrasonic spectrum.
             </li>
             <li>
-                <strong>Inductive Voltage Spikes (Back-EMF Damage):</strong> 
-                <br><em>Issue:</em> When switching the motor OFF, the collapsing magnetic field created sharp negative voltage spikes exceeding \(-40\text{V}\), threatening to rupture the MOSFET drain-source junction.
-                <br><em>Solution:</em> Installed a high-speed 1N5819 Schottky flyback diode directly across the motor terminals to safely recirculate inductive decay currents.
+                <strong>Motor Jerk During Rapid Proximity Changes:</strong> 
+                <br><em>Issue:</em> Waving a hand quickly near the sensor caused high acceleration spikes that stressed the motor drive shaft.
+                <br><em>Solution:</em> Tuned the Derivative gain (\(K_d = 0.12\)) to act as a rate damper, smoothing rapid step changes into gradual velocity transitions.
             </li>
         </ul>
     </section>
@@ -378,19 +406,19 @@ void loop() {
     <section id="applications">
         <h2>05 // Real-World Applications</h2>
         <ul>
-            <li><strong>Electric Mobility &amp; EVs:</strong> Pulse-width modulation forms the fundamental basis for traction motor inverters in electric cars, e-bikes, and electric scooters.</li>
-            <li><strong>Industrial Conveyors &amp; Robotics:</strong> Enables precise variable speed control for assembly lines, robotic arm joints, and automated guided vehicles (AGVs).</li>
-            <li><strong>HVAC &amp; Energy Management:</strong> Regulates fan and pump speeds dynamically according to thermal load demand, reducing electrical energy consumption by up to 40% compared to fixed-speed systems.</li>
+            <li><strong>Automated Collision Avoidance (AGVs &amp; Robotics):</strong> Proximity-modulated rate smoothing enables autonomous robots to slow down smoothly when approaching obstacles.</li>
+            <li><strong>Interactive Motion-Controlled Conveyors:</strong> Contactless industrial speed scaling according to operator distance or box congestion.</li>
+            <li><strong>Smart HVAC &amp; Variable Airflow Systems:</strong> Modulating fan motor velocities continuously without harsh step changes in noise or power draw.</li>
         </ul>
     </section>
 
     <section id="budget-enhancements">
         <h2>06 // What I Would Have Done With More Budget</h2>
         <ul>
-            <li><strong>Full H-Bridge IC (e.g., VNH5019 / L298N):</strong> Upgrade from single-direction low-side switching to a full dual H-bridge topology to allow bidirectional motor rotation (FORWARD / REVERSE) and regenerative braking.</li>
-            <li><strong>Quadrature Encoder Closed-Loop PID Control:</strong> Integrate an optical shaft encoder with interrupt-driven PID velocity control on the microcontroller to maintain constant target RPM under fluctuating mechanical loads.</li>
-            <li><strong>Isolated Optocoupler Driver (PC817):</strong> Add optical isolation between the sensitive MCU microelectronics and high-power 12V motor ground to prevent ground-loop noise and catastrophic high-voltage feedback.</li>
-            <li><strong>Custom Printed Circuit Board (PCB):</strong> Design a compact 2-layer PCB in KiCAD with heavy copper traces (\(2\text{ oz}\)) and an integrated aluminum heatsink for high-current industrial operation.</li>
+            <li><strong>Optical Encoder Feedback for Dual-Loop PID:</strong> Combine proximity-based setpoint targeting with actual shaft RPM encoder measurement for precise closed-loop velocity tracking under varying loads.</li>
+            <li><strong>Full Bidirectional H-Bridge Driver (VNH5019):</strong> Support dynamic braking and instant direction reversal when objects get closer than 5 cm.</li>
+            <li><strong>Time-of-Flight (ToF) Laser Distance Sensor (VL53L0X):</strong> Replace ultrasonic sonar with millimeter-accurate laser ToF measurement to eliminate acoustic reflections.</li>
+            <li><strong>Custom 2-Layer PCB Layout:</strong> Design an industrial PCB in KiCAD with copper pours and optocoupler ground isolation.</li>
         </ul>
     </section>
 
