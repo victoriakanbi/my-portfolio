@@ -278,8 +278,8 @@ float Ki = 0.05;
 float Kd = 4.0;
 float TARGET_SETPOINT_CM = 15.0;
 
-// Motor Threshold
-const int MIN_OPERATING_PWM = 45; // Minimum PWM threshold to overcome static friction
+// PWM to overcome friction
+const int MIN_OPERATING_PWM = 85;
 
 // PID Control Variables
 float errorIntegral = 0.0;
