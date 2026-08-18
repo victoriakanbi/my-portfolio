@@ -204,100 +204,28 @@
         </div>
     </section>
 
-    <section id="math-software">
-        <h2>03 // Math, Reasoning &amp; Software Implementation</h2>
-        <p>The system measures distance \(d(t)\) via ultrasonic flight time \(t_{\text{echo}}\):</p>
+    <section id="software-implementation">
+        <h2>03 // Software Implementation in the Speed Controller</h2>
+        
+        <h3 style="color: var(--accent-color); margin-top: 25px; font-size: 1.1rem;">1. Calculating the Error</h3>
+        <p>I defined my error as</p>
         <div class="equation-box">
-            \[ d(t) = \frac{t_{\text{echo}} \times v_{\text{sound}}}{2} = \frac{t_{\text{echo}} \times 0.0343\text{ cm/\mu s}}{2} \]
+            \[ e(t) = \text{Current Distance} - \text{Target Distance} \]
         </div>
+        <p>If my target is 5cm, and the sensor reads 20cm, the error is +15 cm. The motor needs to spin faster to respond to the distance.</p>
+        <p>If that object is right at 5cm, the error is 0cm. The motor needs to stop because the target has been met.</p>
 
-        <p>Instead of feeding the raw distance directly to the PWM duty cycle—which creates erratic motor acceleration when sensor readings flicker—the error signal \(e(t) = d_{\text{target}}(t) - d_{\text{smoothed}}(t)\) is processed using a continuous <strong>PID Rate-Smoothing Algorithm</strong>:</p>
-
+        <h3 style="color: var(--accent-color); margin-top: 35px; font-size: 1.1rem;">2. P, I, D Breakdown</h3>
+        <p>To calculate the exact speed command (PWM output from 0 to 255), my code adds together three mathematical terms:</p>
         <div class="equation-box">
-            \[ u(t) = K_p \, e(t) + K_i \int_{0}^{t} e(\tau) \, d\tau + K_d \, \frac{de(t)}{dt} \]
-            <p style="font-size: 0.85rem; color: #aaa; margin-top: 10px;">Where \(K_p = 1.8\), \(K_i = 0.05\), and \(K_d = 0.12\). The smoothed output \(u(t)\) is mapped to Timer1 PWM duty cycle (0–799) for 20kHz operation.</p>
+            \[ \text{Output}(t) = P(t) + I(t) + D(t) \]
         </div>
 
-        <p><strong>C++ Arduino PID &amp; Proximity Code Implementation:</strong></p>
-        <div class="code-block">
-<pre>
-/*
- * Proximity-Modulated DC Motor Speed Controller with PID-Based Rate Smoothing
- * Author: Victor Iyanuoluwa Akanbi
- */
-
-const int TRIG_PIN = 2;
-const int ECHO_PIN = 3;
-const int MOTOR_PWM_PIN = 9; // Timer1 PWM Pin
-
-// --- PID PARAMETERS ---
-float Kp = 1.8;
-float Ki = 0.05;
-float Kd = 0.12;
-
-float targetSpeed = 0;
-float currentSpeed = 0;
-float errorIntegral = 0;
-float lastError = 0;
-unsigned long lastTime = 0;
-
-void setup() {
-  Serial.begin(9600);
-  pinMode(TRIG_PIN, OUTPUT);
-  pinMode(ECHO_PIN, INPUT);
-  pinMode(MOTOR_PWM_PIN, OUTPUT);
-
-  // Configure Timer1 for 20 kHz PWM (Fast PWM Mode, TOP = ICR1 = 799)
-  TCCR1A = _BV(COM1A1) | _BV(WGM11);
-  TCCR1B = _BV(WGM13) | _BV(WGM12) | _BV(CS10);
-  ICR1 = 799; 
-}
-
-float measureDistanceCM() {
-  digitalWrite(TRIG_PIN, LOW);
-  delayMicroseconds(2);
-  digitalWrite(TRIG_PIN, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(TRIG_PIN, LOW);
-  
-  long duration = pulseIn(ECHO_PIN, HIGH, 25000); // 25ms timeout
-  if (duration == 0) return 100.0; // Fallback distance
-  return (duration * 0.0343) / 2.0;
-}
-
-void loop() {
-  unsigned long now = millis();
-  float dt = (now - lastTime) / 1000.0;
-  if (dt &lt;= 0.02) return; // 50 Hz PID update rate
-  lastTime = now;
-
-  // 1. Measure Proximity
-  float distance = measureDistanceCM();
-
-  // 2. Map Proximity (5cm - 50cm) to Target PWM Speed Range (0 - 799)
-  targetSpeed = map(constrain(distance, 5, 50), 5, 50, 0, 799);
-
-  // 3. Compute PID Rate-Smoothing Output
-  float error = targetSpeed - currentSpeed;
-  errorIntegral += error * dt;
-  errorIntegral = constrain(errorIntegral, -200, 200); // Anti-windup
-  float errorDerivative = (error - lastError) / dt;
-  lastError = error;
-
-  float pidAdjustment = (Kp * error) + (Ki * errorIntegral) + (Kd * errorDerivative);
-  currentSpeed += pidAdjustment * dt;
-  currentSpeed = constrain(currentSpeed, 0, 799);
-
-  // 4. Update Hardware PWM Register
-  OCR1A = (int)currentSpeed;
-
-  // Telemetry output
-  Serial.print("Dist: "); Serial.print(distance, 1); Serial.print(" cm");
-  Serial.print(" | Target: "); Serial.print(targetSpeed, 0);
-  Serial.print(" | Smoothed PWM: "); Serial.println(currentSpeed, 0);
-}
-</pre>
+        <h4 style="color: var(--accent-color); margin-top: 25px; font-size: 1.0rem;">a. The Proportional term (\(P\))</h4>
+        <div class="equation-box">
+            \[ P = K_p \times e(t) \]
         </div>
+        <p>This term’s purpose is to look at where the object is at the moment (present) and react accordingly. When an object has a large error (far away), \(P\) produces a large output to accelerate the motor.</p>
     </section>
 
     <section id="failures-challenges">
