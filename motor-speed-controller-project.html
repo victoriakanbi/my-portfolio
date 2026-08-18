@@ -456,6 +456,11 @@ void loop() {
                 <br><em>Problem:</em> I faced challenges both in the software part and hardware part. In the hardware, the LEDs wouldn't turn on in the testing phase, For the software, this was my first time using this component so I didn't know how to code it in C++
                 <br><em>Solution:</em> For the hardware, it turned out that a couple of LEDs were wired wrongly so I had to go back and fixed the shorted circuit and eventually the LEDs turned on in the testing phase, For the software part, I watched youtube videos, get help from reddit posts and eventually understood the component enough to write a functional code.
             </li>
+            <li style="margin-top: 20px;">
+                <strong>2: Motor Friction</strong>
+                <br><em>Problem:</em> The Motor wasn't spinning at some PWM because it couldn't overcome friction at a certain PWM
+                <br><em>Solution:</em> I had to introduce a minPWM variable to the code to set a minimum threshold so that the motor can spin
+            </li>
         </ul>
     </section>
 
