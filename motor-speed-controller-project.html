@@ -238,7 +238,7 @@ errorIntegral = constrain(errorIntegral, -50.0, 50.0);
         <div class="equation-box">
             \[ D = K_d \times \frac{de(t)}{dt} \simeq K_d \times \frac{e(t) - e(t - \Delta t)}{\Delta t} \]
         </div>
-        <p>\(D\) measures how fast the distance is moving toward or closing in on the target. If an object is moving toward the target rapidly \(\frac{e(t) - e(t - \Delta t)}{\Delta t}\) becomes a negative slope. This causes \(D\) to produce a negative counter-force which effectively acts as a &ldquo;brake&rdquo; to the system. \(D\) prevents the motor from changing too violently.</p>
+        <p>\(D\) measures how fast the distance is moving toward or closing in on the target. If an object is moving toward the target rapidly \(\frac{e(t) - e(t - \Delta t)}{\Delta t}\) becomes a negative slope. This causes \(D\) to produce a negative counter-force which effectively acts as a &ldquo;brake&rdquo; to the system. \(D\) prevents the motor from changing too aggressively.</p>
 
         <h3 style="color: var(--accent-color); margin-top: 35px; font-size: 1.1rem;">3. Math to Motor Output</h3>
         <p>My code calculates the raw value</p>
