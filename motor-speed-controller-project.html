@@ -285,7 +285,7 @@ const int MIN_OPERATING_PWM = 85;
 float errorIntegral = 0.0;
 float lastDistance = 15.0;
 unsigned long lastPIDTime = 0;
-const int PID_INTERVAL_MS = 40; // 25 Hz Control Loop
+const int PID_INTERVAL_MS = 40; // 25 Hz Control 
 
 // LCD Update Timer
 unsigned long lastLCDTime = 0;
@@ -344,7 +344,6 @@ void setup() {
   pinMode(LATCH_PIN, OUTPUT);
   pinMode(CLOCK_PIN, OUTPUT);
 
-  // Set motor forward direction
   digitalWrite(IN1_PIN, HIGH);
   digitalWrite(IN2_PIN, LOW);
 
@@ -362,7 +361,7 @@ void loop() {
 
   unsigned long currentTime = millis();
 
-  // High-Frequency PID Execution Loop (25 Hz)
+  // Execution Loop (25 Hz)
   if (currentTime - lastPIDTime &gt;= PID_INTERVAL_MS) {
     float dt = (float)(currentTime - lastPIDTime) / 1000.0;
     lastPIDTime = currentTime;
@@ -370,18 +369,14 @@ void loop() {
     float currentDistance = measureDistanceCM();
     float error = currentDistance - TARGET_SETPOINT_CM;
 
-    // Integral with anti-windup clamping
     errorIntegral += error * dt;
     errorIntegral = constrain(errorIntegral, -50.0, 50.0);
 
-    // Derivative calculation
     float derivative = (currentDistance - lastDistance) / dt;
     lastDistance = currentDistance;
 
-    // Raw PID Formula Output
     float rawPIDOutput = (Kp * error) + (Ki * errorIntegral) + (Kd * derivative);
 
-    // Motor PWM with minimum operating threshold
     int pwmValue = 0;
     if (rawPIDOutput &gt; 1.0) {
       pwmValue = constrain((int)rawPIDOutput, MIN_OPERATING_PWM, 255);
@@ -389,11 +384,11 @@ void loop() {
       pwmValue = 0;
     }
 
-    // Actuate motor and update LED bar graph
+    // Motor &amp; LED Bar Graph
     analogWrite(ENABLE_PIN, pwmValue);
     writeShiftRegister(getLEDBitmask(pwmValue));
 
-    // Telemetry stream: Timestamp, Distance, Setpoint, Error, Raw_PID_Math, Actuated_PWM
+    // Timestamp, Distance, Setpoint, Error, Raw_PID_Math, Actuated_PWM
     Serial.print(currentTime);
     Serial.print(",");
     Serial.print(currentDistance, 2);
@@ -407,7 +402,7 @@ void loop() {
     Serial.println(pwmValue);
   }
 
-  // Low-Frequency LCD Telemetry Loop
+  // LLCD
   if (currentTime - lastLCDTime &gt;= LCD_INTERVAL_MS) {
     lastLCDTime = currentTime;
 
