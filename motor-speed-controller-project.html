@@ -460,6 +460,7 @@ void loop() {
             <li style="margin-top: 20px;">
                 <strong>3: Ultrasonic Sensor Jitter Readings</strong>
                 <br><em>Problem:</em> The ultrasonic sensor is prone to jitter readings that causes the fan to have an unstable speed at a fixed location
+                <br><em>Solution:</em> I implemented three software filters: A timeout fallback that holds on to the last known distance reading whenever pulseIn() misses an echo, Bounding the ranges to be between 2 - 60 cm, Calculating the derivative based on the physical position delta rather than raw error making the motor stable.
             </li>
         </ul>
     </section>
