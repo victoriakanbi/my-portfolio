@@ -369,6 +369,7 @@ void loop() {
     float currentDistance = measureDistanceCM();
     float error = currentDistance - TARGET_SETPOINT_CM;
 
+    // Integral
     errorIntegral += error * dt;
     errorIntegral = constrain(errorIntegral, -50.0, 50.0);
 
