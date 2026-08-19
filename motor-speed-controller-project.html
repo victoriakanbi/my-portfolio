@@ -27,6 +27,10 @@
             scroll-behavior: smooth;
         }
 
+        * {
+            box-sizing: border-box;
+        }
+
         html, body {
             margin: 0; padding: 0; min-height: 100%;
             font-family: var(--font-sub);
@@ -36,6 +40,14 @@
                 linear-gradient(90deg, var(--dim-accent) 1px, transparent 1px);
             background-size: 40px 40px;
             line-height: 1.6;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        p, li, td, th, h1, h2, h3, h4, span {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            word-break: break-word;
         }
 
         .nav-section-link {
@@ -58,6 +70,8 @@
             border: 1px solid var(--accent-color); 
             box-shadow: 0 0 20px rgba(0, 255, 65, 0.1); 
             box-sizing: border-box;
+            width: 100%;
+            overflow-x: hidden;
         }
         
         .hero-banner-svg {
@@ -116,13 +130,24 @@
         
         .equation-box {
             text-align: center;
-            padding: 25px;
+            padding: 20px 10px;
             background: rgba(0, 255, 65, 0.05);
             border: 1px dashed var(--accent-color);
             margin: 20px 0;
             font-size: 1.05rem;
-            overflow-x: auto;
-            max-width: 100%;
+            overflow-x: auto !important;
+            max-width: 100% !important;
+            box-sizing: border-box;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        mjx-container[jax="CHTML"][display="true"] {
+            display: block;
+            text-align: center;
+            margin: 0.5em 0;
+            overflow-x: auto !important;
+            max-width: 100% !important;
+            -webkit-overflow-scrolling: touch;
         }
 
         .prototype-photo {
@@ -292,7 +317,7 @@ errorIntegral = constrain(errorIntegral, -50.0, 50.0);
         <div class="equation-box">
             \[ D = K_d \times \frac{de(t)}{dt} \simeq K_d \times \frac{e(t) - e(t - \Delta t)}{\Delta t} \]
         </div>
-        <p>\(D\) measures how fast the distance is moving toward or closing in on the target. If an object is moving toward the target rapidly \(\frac{e(t) - e(t - \Delta t)}{\Delta t}\) becomes a negative slope. This causes \(D\) to produce a negative counter-force which effectively acts as a &ldquo;brake&rdquo; to the system. \(D\) prevents the motor from changing too aggressively.</p>
+        <p>\(D\) measures how fast the distance is moving toward or closing in on the target. If an object is moving toward the target rapidly, the rate of change \(\Delta e / \Delta t\) becomes a negative slope. This causes \(D\) to produce a negative counter-force which effectively acts as a &ldquo;brake&rdquo; to the system. \(D\) prevents the motor from changing too aggressively.</p>
 
         <h3 style="color: var(--accent-color); margin-top: 35px; font-size: 1.1rem;">3. Math to Motor Output</h3>
         <p>My code calculates the raw value</p>
