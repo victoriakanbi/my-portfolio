@@ -121,6 +121,16 @@
             border: 1px dashed var(--accent-color);
             margin: 20px 0;
             font-size: 1.05rem;
+            overflow-x: auto;
+            max-width: 100%;
+        }
+
+        .prototype-photo {
+            max-width: 50%;
+            height: auto;
+            border: 1px solid var(--dim-accent);
+            display: block;
+            margin: 0 auto;
         }
 
         footer { border-top: 1px solid var(--dim-accent); padding: 40px 0; font-size: 0.7rem; color: #555; }
@@ -130,13 +140,31 @@
             .container {
                 margin: 0;
                 border: none;
-                padding: 20px;
+                padding: 15px;
             }
-            .hero-banner-svg {
-                margin: -20px -20px 20px -20px;
-                width: calc(100% + 40px);
-                border: none;
-                border-bottom: 1px solid var(--accent-color);
+            .hero-image-container {
+                max-height: 180px !important;
+                max-width: 100% !important;
+            }
+            .prototype-photo {
+                max-width: 95% !important;
+            }
+            .nav-bar-container {
+                overflow-x: auto;
+                white-space: nowrap;
+                flex-wrap: nowrap !important;
+                padding-bottom: 10px;
+                -webkit-overflow-scrolling: touch;
+            }
+            .nav-section-link, .back-link {
+                font-size: 0.75rem;
+            }
+            .equation-box {
+                padding: 15px 10px;
+                font-size: 0.85rem;
+            }
+            .code-block pre {
+                font-size: 0.75rem;
             }
         }
     </style>
@@ -144,7 +172,7 @@
 <body>
 
 <div class="container">
-    <nav style="display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 25px; border-bottom: 1px solid var(--dim-accent); padding-bottom: 15px; align-items: center;">
+    <nav class="nav-bar-container" style="display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 25px; border-bottom: 1px solid var(--dim-accent); padding-bottom: 15px; align-items: center;">
         <a href="index.html" class="back-link" style="margin-right: 5px;">&lt; [HOME]</a>
         <span style="color: #444;">|</span>
         <a href="#summary" class="nav-section-link">01_SUMMARY</a>
@@ -465,7 +493,7 @@ void loop() {
         </div>
 
         <div class="media-container" style="margin-top: 25px;">
-            <img src="photo_1_motor_speed_controller.jpg" alt="Physical Hardware Setup" style="max-width: 50%; height: auto; border: 1px solid var(--dim-accent); display: block; margin: 0 auto;">
+            <img src="photo_1_motor_speed_controller.jpg" alt="Physical Hardware Setup" class="prototype-photo">
             <p style="font-size: 0.8rem; color: #888; margin-top: 10px; text-align: center;">Hardware Prototype Setup</p>
         </div>
     </section>
