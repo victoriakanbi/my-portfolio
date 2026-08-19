@@ -14,6 +14,10 @@
             --font-sub: 'Space Mono', monospace;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         html, body {
             margin: 0; padding: 0; min-height: 100%;
             font-family: var(--font-sub);
@@ -23,6 +27,18 @@
                 linear-gradient(90deg, var(--dim-accent) 1px, transparent 1px);
             background-size: 40px 40px;
             line-height: 1.6;
+        }
+
+        .nav-section-link {
+            color: #888;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            transition: color 0.2s ease;
+        }
+        .nav-section-link:hover {
+            color: var(--accent-color);
         }
 
         .container { 
@@ -104,13 +120,23 @@
             .container {
                 margin: 0;
                 border: none;
-                padding: 20px;
+                padding: 15px;
             }
             .hero-image-container {
-                margin: -20px -20px 20px -20px; /* Full bleed on mobile */
-                width: calc(100% + 40px);
+                margin: -15px -15px 20px -15px; /* Full bleed on mobile */
+                width: calc(100% + 30px);
                 border: none;
                 border-bottom: 1px solid var(--accent-color);
+            }
+            .nav-bar-container {
+                overflow-x: auto;
+                white-space: nowrap;
+                flex-wrap: nowrap !important;
+                padding-bottom: 10px;
+                -webkit-overflow-scrolling: touch;
+            }
+            .nav-section-link, .back-link {
+                font-size: 0.75rem;
             }
         }
     </style>
@@ -118,7 +144,16 @@
 <body>
 
 <div class="container">
-    <a href="index.html" class="back-link">< [BACK]</a>
+    <nav class="nav-bar-container" style="display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 25px; border-bottom: 1px solid var(--dim-accent); padding-bottom: 15px; align-items: center;">
+        <a href="index.html" class="back-link" style="margin-right: 5px;">&lt; [HOME]</a>
+        <span style="color: #444;">|</span>
+        <a href="#summary" class="nav-section-link">01_SUMMARY</a>
+        <a href="#specs" class="nav-section-link">02_SPECS</a>
+        <a href="#design" class="nav-section-link">03_DESIGN</a>
+        <a href="#validation" class="nav-section-link">04_VALIDATION</a>
+        <a href="#challenges" class="nav-section-link">05_CHALLENGES</a>
+        <a href="#applications" class="nav-section-link">06_APPLICATIONS</a>
+    </nav>
 
     <div class="hero-image-container">
         <img src="top-banner.jpg" alt="Automated Ambient Light Control System Overview">
