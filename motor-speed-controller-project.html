@@ -23,6 +23,10 @@
             --font-sub: 'Space Mono', monospace;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         html, body {
             margin: 0; padding: 0; min-height: 100%;
             font-family: var(--font-sub);
@@ -32,6 +36,18 @@
                 linear-gradient(90deg, var(--dim-accent) 1px, transparent 1px);
             background-size: 40px 40px;
             line-height: 1.6;
+        }
+
+        .nav-section-link {
+            color: #888;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            transition: color 0.2s ease;
+        }
+        .nav-section-link:hover {
+            color: var(--accent-color);
         }
 
         .container { 
@@ -128,7 +144,17 @@
 <body>
 
 <div class="container">
-    <a href="index.html" class="back-link">&lt; [BACK]</a>
+    <nav style="display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 25px; border-bottom: 1px solid var(--dim-accent); padding-bottom: 15px; align-items: center;">
+        <a href="index.html" class="back-link" style="margin-right: 5px;">&lt; [HOME]</a>
+        <span style="color: #444;">|</span>
+        <a href="#summary" class="nav-section-link">01_SUMMARY</a>
+        <a href="#architecture" class="nav-section-link">02_HARDWARE</a>
+        <a href="#software" class="nav-section-link">03_SOFTWARE</a>
+        <a href="#demonstration" class="nav-section-link">04_DEMO</a>
+        <a href="#failures-challenges" class="nav-section-link">05_CHALLENGES</a>
+        <a href="#applications" class="nav-section-link">06_APPLICATIONS</a>
+        <a href="#budget-enhancements" class="nav-section-link">07_FUTURE</a>
+    </nav>
 
     <div class="hero-image-container" style="width: 100%; max-width: 700px; border: 1px solid var(--accent-color); margin: 0 auto 30px auto; overflow: hidden; display: flex; max-height: 240px;">
         <img src="top_pic_motor_speed_controller.jpg" alt="Proximity Driven PID Motor Controller Banner" style="width: 100%; height: auto; object-fit: cover; display: block;">
