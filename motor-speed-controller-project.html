@@ -528,18 +528,18 @@ void loop() {
         <ul>
             <li>
                 <strong>1: Getting the 74HC595 Shift Register &amp; LED Bar Graph to work</strong>
-                <br><em>Problem:</em> I faced challenges both in the software part and hardware part. In the hardware, the LEDs wouldn't turn on in the testing phase, For the software, this was my first time using this component so I didn't know how to code it in C++
-                <br><em>Solution:</em> For the hardware, it turned out that a couple of LEDs were wired wrongly so I had to go back and fixed the shorted circuit and eventually the LEDs turned on in the testing phase, For the software part, I watched youtube videos, get help from reddit posts and eventually understood the component enough to write a functional code.
+                <p style="margin-top: 10px; margin-bottom: 8px;"><em>Problem:</em> I faced challenges both in the software part and hardware part. In the hardware, the LEDs wouldn't turn on in the testing phase, For the software, this was my first time using this component so I didn't know how to code it in C++</p>
+                <p style="margin-top: 8px; margin-bottom: 0;"><em>Solution:</em> For the hardware, it turned out that a couple of LEDs were wired wrongly so I had to go back and fixed the shorted circuit and eventually the LEDs turned on in the testing phase, For the software part, I watched youtube videos, get help from reddit posts and eventually understood the component enough to write a functional code.</p>
             </li>
-            <li style="margin-top: 20px;">
+            <li style="margin-top: 25px;">
                 <strong>2: Motor Friction</strong>
-                <br><em>Problem:</em> The Motor wasn't spinning at some PWM because it couldn't overcome friction.
-                <br><em>Solution:</em> I had to introduce a minPWM variable to the code to set a minimum threshold so that the motor can spin.
+                <p style="margin-top: 10px; margin-bottom: 8px;"><em>Problem:</em> The Motor wasn't spinning at some PWM because it couldn't overcome friction.</p>
+                <p style="margin-top: 8px; margin-bottom: 0;"><em>Solution:</em> I had to introduce a minPWM variable to the code to set a minimum threshold so that the motor can spin.</p>
             </li>
-            <li style="margin-top: 20px;">
+            <li style="margin-top: 25px;">
                 <strong>3: Ultrasonic Sensor Jitter Readings</strong>
-                <br><em>Problem:</em> The ultrasonic sensor is prone to jitter readings that causes the fan to have an unstable speed at a fixed location
-                <br><em>Solution:</em> I implemented three software filters: A timeout fallback that holds on to the last known distance reading whenever pulseIn() misses an echo, Bounding the ranges to be between 2 - 60 cm, Calculating the derivative based on the physical position delta rather than raw error making the motor stable.
+                <p style="margin-top: 10px; margin-bottom: 8px;"><em>Problem:</em> The ultrasonic sensor is prone to jitter readings that causes the fan to have an unstable speed at a fixed location</p>
+                <p style="margin-top: 8px; margin-bottom: 0;"><em>Solution:</em> I implemented three software filters: A timeout fallback that holds on to the last known distance reading whenever pulseIn() misses an echo, Bounding the ranges to be between 2 - 60 cm, Calculating the derivative based on the physical position delta rather than raw error making the motor stable.</p>
             </li>
         </ul>
     </section>
